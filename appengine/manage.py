@@ -2,11 +2,11 @@
 import os
 import sys
 
-from switchpass.boot import fix_path
+from switchpass.site.boot import fix_path
 fix_path()
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "switchpass.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "switchpass.site.settings")
 
     from djangae.core.management import execute_from_command_line
 

@@ -44,6 +44,8 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
     'djangae.contrib.uniquetool',
+    'switchpass.core',
+    'switchpass.site',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,8 +77,8 @@ SECURE_CHECKS = [
     "djangosecure.check.djangosecure.check_sts",
     "djangosecure.check.djangosecure.check_frame_deny",
     "djangosecure.check.djangosecure.check_ssl_redirect",
-    "switchpass.checks.check_session_csrf_enabled",
-    "switchpass.checks.check_csp_is_not_report_only"
+    "switchpass.site.checks.check_session_csrf_enabled",
+    "switchpass.site.checks.check_csp_is_not_report_only"
 ]
 
 CSP_REPORT_URI = reverse_lazy('report_csp')

@@ -15,7 +15,7 @@ SECURE_REDIRECT_EXEMPT = [
     r"^_ah/"
 ]
 
-SECURE_CHECKS += ["switchpass.checks.check_csp_sources_not_unsafe"]
+SECURE_CHECKS += ["switchpass.site.checks.check_csp_sources_not_unsafe"]
 
 DEBUG = False
 TEMPLATE_DEBUG = False
