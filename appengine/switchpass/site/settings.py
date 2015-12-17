@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'cspreports',
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
-    'djangae.contrib.uniquetool',
+    # 'djangae.contrib.uniquetool',
     'switchpass.core',
     'switchpass.site',
 )
