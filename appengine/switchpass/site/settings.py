@@ -87,9 +87,9 @@ CSP_REPORTS_LOG_LEVEL = 'warning'
 CSP_REPORTS_SAVE = True
 CSP_REPORTS_EMAIL_ADMINS = False
 
-ROOT_URLCONF = 'switchpass.urls'
+ROOT_URLCONF = 'switchpass.site.urls'
 
-WSGI_APPLICATION = 'switchpass.wsgi.application'
+WSGI_APPLICATION = 'switchpass.site.wsgi.application'
 
 
 # Internationalization
