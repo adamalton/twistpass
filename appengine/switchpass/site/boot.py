@@ -1,7 +1,7 @@
 import sys
 from os.path import dirname, abspath, join, exists
 
-PROJECT_DIR = dirname(dirname(abspath(__file__)))
+PROJECT_DIR = dirname(dirname(dirname(abspath(__file__))))
 SITEPACKAGES_DIR = join(PROJECT_DIR, "sitepackages")
 APPENGINE_DIR = join(SITEPACKAGES_DIR, "google_appengine")
 
