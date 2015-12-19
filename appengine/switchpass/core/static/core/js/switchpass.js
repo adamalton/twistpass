@@ -6,9 +6,12 @@
 
 		init: function(){
 			$("button.next-step").on("click", sp.nextStepClick);
+			$("input").on("keypress", sp.nextStepOnReturn);
 			$("button.generate").on("click", sp.generateClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
 			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
+			$("button.restart").on("click", sp.restart);
+			$(".step:first").find("input:first").focus();
 		},
 
 		log: function(msg){
@@ -19,7 +22,19 @@
 
 		nextStepClick: function(){
 			var $this_step = $(this).closest(".step");
-			$this_step.addClass("hide").next().removeClass("hide");
+			$this_step.addClass("hide").next().removeClass("hide").find("input:first").focus();
+		},
+
+		nextStepOnReturn: function(e){
+			// When the return key is pressed, continue to the next step
+			if(e.keyCode === 13){
+				$(this).closest(".step").find("button.next-step,button.generate").trigger("click");
+			}
+		},
+
+		restart: function(){
+			$("input").val("");
+			$(".step").addClass("hide").eq(0).removeClass("hide").find("input:first").focus();
 		},
 
 		generateClick: function(){
