@@ -6,7 +6,7 @@
 
 		init: function(){
 			$("button.next-step").on("click", sp.nextStepClick);
-			$("input").on("keypress", sp.nextStepOnReturn);
+			$(".step:not(:last) input").on("keypress", sp.nextStepOnReturn);
 			$("button.generate").on("click", sp.generateClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
 			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
@@ -70,6 +70,7 @@
 
 		updateStrengthOMeter: function(){
 			var strength = sp.getPasswordStrength($(this).val());
+			var colour = sp.getStrengthColour(strength);
 			sp.log("password: " + $(this).val());
 			sp.log("password legnth: " + String($(this).val().length));
 			sp.log(strength);
@@ -77,6 +78,7 @@
 				.addClass(strength);
 			$(".strength-desc").addClass("hide");
 			$(".strength-desc." + strength).removeClass("hide");
+			$("#strength .progress div").removeClass("grey red orange blue green").addClass(colour);
 		},
 
 		getPasswordStrength: function(password){
@@ -109,14 +111,34 @@
 				return "pathetic";
 			}else if(num_possibilities < 1000000000000){
 				return "very-weak";
-			}else if(num_possibilities < 100000000000000000){
+			}else if(num_possibilities < 1000000000000000000){
 				return "weak";
-			}else if(num_possibilities < 10000000000000000000000){
+			}else if(num_possibilities < 100000000000000000000000){
 				return "borderline";
-			}else if(num_possibilities < 100000000000000000000000000000){
+			}else if(num_possibilities < 1000000000000000000000000000000){
 				return "ok";
 			}
 			return "good";
+		},
+
+		getStrengthColour: function(strength){
+			// Given a strength as a string, e.g. "weak", return a CSS class for the colour
+			switch(strength) {
+				case "nothing":
+					return "grey";
+				case "pathetic":
+					return "red";
+				case "very-weak":
+					return "red";
+				case "weak":
+					return "orange";
+				case "borderline":
+					return "orange";
+				case "ok":
+					return "blue";
+				case "good":
+					return "green";
+				}
 		}
 
 	};

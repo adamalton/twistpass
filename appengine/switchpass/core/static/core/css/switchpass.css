@@ -10,10 +10,10 @@
 	width: 6%;
 }
 #strength.very-weak .progress div{
-	width: 17%;
+	width: 12%;
 }
 #strength.weak .progress div{
-	width: 30%;
+	width: 27%;
 }
 #strength.borderline .progress div{
 	width: 50%;
@@ -23,15 +23,4 @@
 }
 #strength.good .progress div{
 	width: 100%;
-}
-
-#strength.nothing .strength-desc .nothing,
-#strength.pathetic .strength-desc .pathetic,
-#strength.very-weak .strength-desc .very-weak,
-#strength.weak .strength-desc .weak,
-#strength.borderline .strength-desc .borderline,
-#strength.ok .strength-desc .ok,
-#strength.good .strength-desc .good,
-#strength.nothing .strength-desc .nothing {
-	display: inline;
 }
