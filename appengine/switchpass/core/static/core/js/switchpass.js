@@ -5,11 +5,12 @@
 	var sp = {
 
 		init: function(){
-			$("button.next-step").on("click", sp.nextStepClick);
 			$(".step:not(:last) input").on("keypress", sp.nextStepOnReturn);
+			$(".step:not(:last) input").on("keyup", sp.enableNextButtonIfValid);
+			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
+			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
-			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
 			$("button.restart").on("click", sp.restart);
 			$(".step:first").find("input:first").focus();
 		},
@@ -21,23 +22,52 @@
 		},
 
 		nextStepClick: function(){
-			var $this_step = $(this).closest(".step");
-			$this_step.addClass("hide").next().removeClass("hide").find("input:first").focus();
+			var $this = $(this);
+			if(!$this.hasClass("disabled")){
+				$this.closest(".step").addClass("hide").next().removeClass("hide").find("input:first").focus();
+			}
+		},
+
+		enableNextButtonIfValid: function(){
+			// If `this` <input> is valid then enable the "Next" button in this step
+			var $this = $(this);
+			var $button = $this.closest(".step").find("button.next-step,button.generate");
+			sp.log($button);
+			sp.log($button.hasClass("disabled"));
+			if(sp.isInputValid.call(this)){
+				$button.removeClass("disabled");
+			}else{
+				$button.addClass("disabled");
+			}
+		},
+
+		isInputValid: function(){
+			// Is the given input (`this`) valid?
+			var $this = $(this);
+			var validator = sp.inputValidators[$this.attr("id")];
+			sp.log(validator);
+			console.log("Is valid: " + validator($this));
+			return validator($this);
 		},
 
 		nextStepOnReturn: function(e){
-			// When the return key is pressed, continue to the next step
+			// When the return key is pressed, continue to the next step if this step is valid
 			if(e.keyCode === 13){
-				$(this).closest(".step").find("button.next-step,button.generate").trigger("click");
+				var $button = $(this).closest(".step").find("button.next-step,button.generate");
+				if(!$button.hasClass("disabled")){
+					$button.trigger("click");
+				}
 			}
 		},
 
 		restart: function(){
+			// Return to step 1 of the generator UI
 			$("input").val("");
 			$(".step").addClass("hide").eq(0).removeClass("hide").find("input:first").focus();
 		},
 
 		generateClick: function(){
+			// Event handler for when the "Generate" button is clicked
 			sp.nextStepClick.call(this); //trigger the showing of the next step as usual
 			var password = sp.generatePassword();
 			$("#generated-password").val(password);
@@ -113,7 +143,7 @@
 				return "very-weak";
 			}else if(num_possibilities < 1000000000000000000){
 				return "weak";
-			}else if(num_possibilities < 100000000000000000000000){
+			}else if(num_possibilities < 1000000000000000000000000){
 				return "borderline";
 			}else if(num_possibilities < 1000000000000000000000000000000){
 				return "ok";
@@ -139,9 +169,30 @@
 				case "good":
 					return "green";
 				}
+		},
+
+		inputValidators: {
+			"domain-name": function($el){
+				return Boolean($el.val().length);
+			},
+			"master-password-1": function($el){
+				var strength = sp.getPasswordStrength($el.val());
+				return strength === "ok" || strength === "good";
+			},
+			"master-password-2": function($el){
+				return $el.val() === $("#master-password-1").val();
+			}
 		}
 
 	};
 
 	sp.init();
+})();
+
+
+
+/* All Pages */
+
+(function(){
+	$(".button-collapse").sideNav();
 })();
