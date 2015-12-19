@@ -1,0 +1,73 @@
+{% extends "core/base.html" %}
+{% block main %}
+
+<div class="section no-pad-bot">
+	<div class="container">
+		<form>
+			<br><br>
+			<h1 class="header center orange-text">Generate A Password</h1>
+
+
+			<div class="row center step">
+				<h5 class="header col s12">What Website Do You Want To Generate A Password For?</h5>
+				<div class="input-field col s12">
+					<input id="domain-name" type="text" class="validate" placeholder="e.g. google.com" />
+					<label for="domain-name">Domain Name</label>
+				</div>
+				<button type="button" class="btn waves-effect waves-light orange">Next</button>
+			</div>
+
+
+			<div class="row center step">
+				<h5 class="header col s12">Enter Your Master Password</h5>
+				<p class="red-text center">
+					It is <strong>vital</strong> that this is so obscure that no one (human or
+					machine) will <strong>ever</strong> come up with the same one.<br />
+					<a>Why?</a><br />
+					<a>Tips for creating your master password</a>
+				</p>
+				<div class="input-field col s12">
+					<input id="master-password-1" type="password" class="validate" />
+					<label for="master-password-1">Master Password</label>
+				</div>
+				<button type="button" class="btn waves-effect waves-light orange">Next</button>
+			</div>
+
+			<div class="row center step">
+				<h5 class="header col s12">Confirm Your Master Password</h5>
+				<p>
+					It looks like you're generating your password for
+					<span class="website-name">this website</span> for the first time, so it's
+					important that your master password is correct.
+				</p>
+				<div class="input-field col s12">
+					<input id="master-password-2" type="text" class="validate" />
+					<label for="master-password-">Master Password</label>
+				</div>
+				<button type="button" class="btn waves-effect waves-light orange">Next</button>
+			</div>
+
+
+			<div class="row center step">
+
+				<h5>Your password for <span class="website-name">this website</span> is:</h5>
+				<input type="password" id="generated-password" value="" />
+
+				<div class="switch">
+					<label>
+						<input type="checkbox"><span class="lever"></span> Show password
+					</label>
+				</div>
+				<div>
+					<button class="btn waves-effect waves-light orange" type="submit" name="action">Copy to clipboard</button>
+				</div>
+			</div>
+			<br><br>
+		</form>
+
+	</div>
+</div>
+
+
+
+{% endblock main %}
