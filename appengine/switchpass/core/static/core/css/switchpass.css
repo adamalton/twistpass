@@ -3,6 +3,14 @@
 	vertical-align: middle;
 }
 
+.input-field label{
+	/* This is to fix an issue where a label's error message gets wrapped because it's
+		restricted by the width of the label (when the label text is shorter than the error text).
+	*/
+	width: 100%;
+	text-align: left;
+
+}
 #strength.nothing .progress div{
 	width: 0%;
 }

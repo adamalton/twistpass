@@ -11,8 +11,8 @@
 				<div class="row center">
 					<h5 class="header col s12">What Website Do You Want To Generate A Password For?</h5>
 					<div class="input-field col s8">
-						<input id="domain-name" type="text" class="validate" placeholder="e.g. google.com" />
-						<label for="domain-name">Domain Name</label>
+						<input id="domain-name" type="text" placeholder="e.g. google.com" />
+						<label for="domain-name" data-error="This is required">Domain Name</label>
 					</div>
 					<div class="input-field col s4">
 						<p class="light">
@@ -34,8 +34,8 @@
 
 					</p>
 					<div class="input-field col s8">
-						<input id="master-password-1" type="password" class="validate" />
-						<label for="master-password-1">Master Password</label>
+						<input id="master-password-1" type="password" />
+						<label for="master-password-1" data-error="Password not strong enough">Master Password</label>
 					</div>
 					<div class="input-field col s4 nothing" id="strength">
 						<p>
@@ -53,7 +53,7 @@
 							<div class="determinate grey"></div>
 						</div>
 					</div>
-					<div class="left-align col s12">
+					<div class="input-field left-align col s12">
 						<a>Tips for creating your master password</a>
 					</div>
 					<div class="col s12">
@@ -66,8 +66,8 @@
 				<div class="row center">
 					<h5 class="header col s12">Confirm Your Master Password</h5>
 					<div class="input-field col s8">
-						<input id="master-password-2" type="password" class="validate" />
-						<label for="master-password-">Master Password</label>
+						<input id="master-password-2" type="password" />
+						<label for="master-password-" data-error="This does not match what you typed before">Master Password</label>
 					</div>
 					<div class="input-field col s4">
 						<p>
@@ -103,7 +103,7 @@
 					<i class="small material-icons">done</i> Copied to clipboard
 				</div>
 				<div class="row center">
-					<button type="button" class="btn waves-effect waves-light grey restart">Start again</button>
+					<button type="button" class="btn waves-effect waves-light blue restart">Start again</button>
 				</div>
 			</div>
 			<br><br>

@@ -23,7 +23,9 @@
 
 		nextStepClick: function(){
 			var $this = $(this);
-			if(!$this.hasClass("disabled")){
+			if($this.hasClass("disabled")){
+				sp.showErrorMessage.call($this.closest(".step").find("input:first"));
+			}else{
 				$this.closest(".step").addClass("hide").next().removeClass("hide").find("input:first").focus();
 			}
 		},
@@ -36,6 +38,9 @@
 			sp.log($button.hasClass("disabled"));
 			if(sp.isInputValid.call(this)){
 				$button.removeClass("disabled");
+				// While we're here we also remove any error message which has been previously
+				// displayed (see showErrorMessage)
+				sp.hideErrorMessage.call(this);
 			}else{
 				$button.addClass("disabled");
 			}
@@ -54,26 +59,37 @@
 			// When the return key is pressed, continue to the next step if this step is valid
 			if(e.keyCode === 13){
 				var $button = $(this).closest(".step").find("button.next-step,button.generate");
-				if(!$button.hasClass("disabled")){
-					$button.trigger("click");
-				}
+				$button.trigger("click");
 			}
+		},
+
+		showErrorMessage: function(){
+			// Show the error message for the given input (`this`).  We only do this when the user
+			// tries to continue to the next step, we don't update it continuously as they type.
+			$(this).addClass("invalid");
+		},
+
+		hideErrorMessage: function(){
+			$(this).removeClass("invalid");
 		},
 
 		restart: function(){
 			// Return to step 1 of the generator UI
 			$("input").val("");
 			$(".step").addClass("hide").eq(0).removeClass("hide").find("input:first").focus();
+			$("button.next-step,button.generate").addClass("disabled");
 		},
 
 		generateClick: function(){
 			// Event handler for when the "Generate" button is clicked
 			sp.nextStepClick.call(this); //trigger the showing of the next step as usual
-			var password = sp.generatePassword();
-			$("#generated-password").val(password);
-			sp.copyPasswordToClipboard(password);
-			sp.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
-			$("#generated-password").select();
+			if(!$(this).hasClass("disabled")){
+				var password = sp.generatePassword();
+				$("#generated-password").val(password);
+				sp.copyPasswordToClipboard(password);
+				sp.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
+				$("#generated-password").select();
+			}
 		},
 
 		copyPasswordToClipboard: function(password){
