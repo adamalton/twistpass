@@ -7,59 +7,98 @@
 			<br><br>
 			<h1 class="header center orange-text">Generate A Password</h1>
 
-
-			<div class="row center step">
-				<h5 class="header col s12">What Website Do You Want To Generate A Password For?</h5>
-				<div class="input-field col s12">
-					<input id="domain-name" type="text" class="validate" placeholder="e.g. google.com" />
-					<label for="domain-name">Domain Name</label>
+			<div class="step">
+				<div class="row center">
+					<h5 class="header col s12">What Website Do You Want To Generate A Password For?</h5>
+					<div class="input-field col s8">
+						<input id="domain-name" type="text" class="validate" placeholder="e.g. google.com" />
+						<label for="domain-name">Domain Name</label>
+					</div>
+					<div class="input-field col s4">
+						<p class="light">
+							If you're generating a password for something which is not a website,
+							then enter a name for it which you can reliably enter the same next time.
+						</p>
+					</div>
+					<button type="button" class="btn waves-effect waves-light orange next-step">Next</button>
 				</div>
-				<button type="button" class="btn waves-effect waves-light orange">Next</button>
+			</div>
+
+			<div class="step hide">
+				<div class="row center">
+					<h5 class="header col s12">Enter Your Master Password</h5>
+					<p class="red-text center">
+						It is <strong>vital</strong> that this is so obscure that no one (human or
+						machine) will <strong>ever</strong> come up with the same one.
+						<a>Why?</a><br />
+
+					</p>
+					<div class="input-field col s8">
+						<input id="master-password-1" type="password" class="validate" />
+						<label for="master-password-1">Master Password</label>
+					</div>
+					<div class="input-field col s4 nothing" id="strength">
+						<p>
+							<span class="strength-desc nothing">Strength o-meter</span>
+							<span class="strength-desc pathetic hide">Inexcusably pathetic</span>
+							<span class="strength-desc very-weak hide">Very weak</span>
+							<span class="strength-desc weak hide">Weak</span>
+							<span class="strength-desc borderline hide">Borderline passable</span>
+							<span class="strength-desc ok hide">OK</span>
+							<span class="strength-desc good hide">Good</span>
+						</p>
+						<div class="progress grey lighten-2">
+							<div class="determinate"></div>
+						</div>
+					</div>
+					<div class="left-align col s12">
+						<a>Tips for creating your master password</a>
+					</div>
+					<div class="col s12">
+						<button type="button" class="btn waves-effect waves-light orange next-step">Next</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="step hide">
+				<div class="row center">
+					<h5 class="header col s12">Confirm Your Master Password</h5>
+					<div class="input-field col s8">
+						<input id="master-password-2" type="password" class="validate" />
+						<label for="master-password-">Master Password</label>
+					</div>
+					<div class="input-field col s4">
+						<p>
+							It looks like you're generating your password for
+							<span class="website-name">this website</span> for the first time, so it's
+							important that your master password is correct.
+						</p>
+					</div>
+					<button type="button" class="btn waves-effect waves-light orange generate">Generate password</button>
+				</div>
+			</div>
+
+			<div class="step hide generating">
+				<div class="row center">
+					<h5>Generating<span>.</span><span>.</span><span>.</span></h5>
+				</div>
 			</div>
 
 
-			<div class="row center step">
-				<h5 class="header col s12">Enter Your Master Password</h5>
-				<p class="red-text center">
-					It is <strong>vital</strong> that this is so obscure that no one (human or
-					machine) will <strong>ever</strong> come up with the same one.<br />
-					<a>Why?</a><br />
-					<a>Tips for creating your master password</a>
-				</p>
-				<div class="input-field col s12">
-					<input id="master-password-1" type="password" class="validate" />
-					<label for="master-password-1">Master Password</label>
+			<div class="step hide result">
+				<div class="row center">
+					<h5>Your password for <span class="website-name">this website</span> is:</h5>
+					<div class="input-field col s8">
+						<input type="password" id="generated-password" value="" />
+					</div>
+					<div class="switch col s4">
+						<label>
+							<input type="checkbox" id="show-password"><span class="lever"></span> Show password
+						</label>
+					</div>
 				</div>
-				<button type="button" class="btn waves-effect waves-light orange">Next</button>
-			</div>
-
-			<div class="row center step">
-				<h5 class="header col s12">Confirm Your Master Password</h5>
-				<p>
-					It looks like you're generating your password for
-					<span class="website-name">this website</span> for the first time, so it's
-					important that your master password is correct.
-				</p>
-				<div class="input-field col s12">
-					<input id="master-password-2" type="text" class="validate" />
-					<label for="master-password-">Master Password</label>
-				</div>
-				<button type="button" class="btn waves-effect waves-light orange">Next</button>
-			</div>
-
-
-			<div class="row center step">
-
-				<h5>Your password for <span class="website-name">this website</span> is:</h5>
-				<input type="password" id="generated-password" value="" />
-
-				<div class="switch">
-					<label>
-						<input type="checkbox"><span class="lever"></span> Show password
-					</label>
-				</div>
-				<div>
-					<button class="btn waves-effect waves-light orange" type="submit" name="action">Copy to clipboard</button>
+				<div class="row center hide copied valign-wrapper green-text">
+					<i class="small material-icons">done</i> Copied to clipboard
 				</div>
 			</div>
 			<br><br>

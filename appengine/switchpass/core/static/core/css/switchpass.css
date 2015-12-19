@@ -2,3 +2,36 @@
 	height:50px;
 	vertical-align: middle;
 }
+
+#strength.nothing .progress div{
+	width: 0%;
+}
+#strength.pathetic .progress div{
+	width: 6%;
+}
+#strength.very-weak .progress div{
+	width: 17%;
+}
+#strength.weak .progress div{
+	width: 30%;
+}
+#strength.borderline .progress div{
+	width: 50%;
+}
+#strength.ok .progress div{
+	width: 60%;
+}
+#strength.good .progress div{
+	width: 100%;
+}
+
+#strength.nothing .strength-desc .nothing,
+#strength.pathetic .strength-desc .pathetic,
+#strength.very-weak .strength-desc .very-weak,
+#strength.weak .strength-desc .weak,
+#strength.borderline .strength-desc .borderline,
+#strength.ok .strength-desc .ok,
+#strength.good .strength-desc .good,
+#strength.nothing .strength-desc .nothing {
+	display: inline;
+}
