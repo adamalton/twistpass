@@ -11,7 +11,6 @@
 			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
-			$("button.restart").on("click", sp.restart);
 			$(".step:first").find("input:first").focus();
 		},
 
@@ -71,13 +70,6 @@
 
 		hideErrorMessage: function(){
 			$(this).removeClass("invalid");
-		},
-
-		restart: function(){
-			// Return to step 1 of the generator UI
-			$("input").val("");
-			$(".step").addClass("hide").eq(0).removeClass("hide").find("input:first").focus();
-			$("button.next-step,button.generate").addClass("disabled");
 		},
 
 		generateClick: function(){
