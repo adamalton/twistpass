@@ -159,9 +159,9 @@
 				return "very-weak";
 			}else if(num_possibilities < 1000000000000000000){
 				return "weak";
-			}else if(num_possibilities < 1000000000000000000000000){
+			}else if(num_possibilities < 10000000000000000000000000){
 				return "borderline";
-			}else if(num_possibilities < 1000000000000000000000000000000){
+			}else if(num_possibilities < 10000000000000000000000000000000){
 				return "ok";
 			}
 			return "good";
