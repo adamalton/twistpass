@@ -11,7 +11,8 @@
 			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
-			$(".step:first").find("input:first").focus();
+			var $first_input = $(".step:first").find("input:first").focus();
+			sp.enableNextButtonIfValid.call($first_input[0]);
 		},
 
 		log: function(msg){
