@@ -33,7 +33,21 @@
 	width: 100%;
 }
 
+.step .switch{
+	margin-top: 1rem;
+}
+.step .switch label span{
+	margin-left: 6px;
+}
+
+
+/* Materialize CSS bug fixes */
+
 .btn i.material-icons{
-	/* Hack to fix alignment - a bug in Materialize CSS really */
 	vertical-align: sub;
+}
+
+.switch label{
+	/* Fix the fact that labels are normally position: absolute, which causes a switch to take up no space */
+	position: static;
 }

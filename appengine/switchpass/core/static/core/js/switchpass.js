@@ -11,7 +11,7 @@
 			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
 			$("button.prev-step").on("click", sp.prevStepClick);
-			$("#show-password").on("change", sp.togglePasswordDisplay);
+			$(".show-password").on("change", sp.togglePasswordDisplay);
 			var $first_input = $(".step:first").find("input:first").focus();
 			sp.enableNextButtonIfValid.call($first_input[0]);
 		},
@@ -107,9 +107,10 @@
 		},
 
 		togglePasswordDisplay: function(){
-			var show = $(this).is(":checked");
+			var $this = $(this);
+			var show = $this.is(":checked");
 			var type = show === true ? "text" : "password";
-			$("#generated-password").attr("type", type);
+			$this.closest(".step").find("input:first").attr("type", type);
 		},
 
 		updateStrengthOMeter: function(){

@@ -36,30 +36,41 @@
 
 					</p>
 					<div class="input-field col s8">
-						<input id="master-password-1" type="password" />
-						<label for="master-password-1" data-error="Password not strong enough">Master Password</label>
-					</div>
-					<div class="input-field col s4 nothing" id="strength">
-						<p>
-							<span class="strength-desc nothing">Strength o-meter</span>
-							<span class="strength-desc pathetic hide">Inexcusably pathetic</span>
-							<span class="strength-desc very-weak hide">Very weak</span>
-							<span class="strength-desc weak hide">Weak</span>
-							<span class="strength-desc borderline hide">Getting there</span>
-							<span class="strength-desc ok hide">OK</span>
-							<span class="strength-desc good hide">
-								Good <span class="light">(if you haven't used words)</span>
-							</span>
-						</p>
-						<div class="progress grey lighten-2">
-							<div class="determinate grey"></div>
+						<div>
+							<input id="master-password-1" type="password" />
+							<label for="master-password-1" data-error="Password not strong enough">Master Password</label>
+						</div>
+						<div class="nothing" id="strength">
+							<p>
+								<span class="strength-desc nothing">Strength o-meter</span>
+								<span class="strength-desc pathetic hide">Inexcusably pathetic</span>
+								<span class="strength-desc very-weak hide">Very weak</span>
+								<span class="strength-desc weak hide">Weak</span>
+								<span class="strength-desc borderline hide">Getting there</span>
+								<span class="strength-desc ok hide">OK</span>
+								<span class="strength-desc good hide">
+									Good <span class="light">(if you haven't used words)</span>
+								</span>
+							</p>
+							<div class="progress grey lighten-2">
+								<div class="determinate grey"></div>
+							</div>
 						</div>
 					</div>
-					<div class="input-field left-align col s12">
-						<a>Tips for creating your master password</a>
+					<div class="input-field col s4 left-align">
+						<div class="switch">
+							<label>
+								<input type="checkbox" class="show-password" /><span class="lever"></span> Show password
+							</label>
+						</div>
+						<p>
+							<a>Tips for creating your master password</a>
+						</p>
 					</div>
+				</div><!-- end row -->
+				<div class="row center">
 					<div class="col s4 left-align">
-						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</a>
+						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</button>
 					</div>
 					<div class="col s4">
 						<button type="button" class="btn waves-effect waves-light disabled orange next-step">Next</button>
@@ -68,22 +79,29 @@
 						&nbsp;
 					</div>
 				</div>
-			</div>
+			</div><!-- end step -->
 
 			<div class="step hide">
 				<div class="row center">
 					<h5 class="header col s12">Confirm Your Master Password</h5>
+					<p>
+						It looks like you're generating your password for
+						<span class="website-name">this website</span> for the first time, so it's
+						important that your master password is correct.
+					</p>
 					<div class="input-field col s8">
 						<input id="master-password-2" type="password" />
 						<label for="master-password-" data-error="This does not match what you typed before">Master Password</label>
 					</div>
-					<div class="input-field col s4">
-						<p>
-							It looks like you're generating your password for
-							<span class="website-name">this website</span> for the first time, so it's
-							important that your master password is correct.
-						</p>
+					<div class="input-field col s4 left-align">
+						<div class="switch">
+							<label>
+								<input type="checkbox" class="show-password" /><span class="lever"></span> Show password
+							</label>
+						</div>
 					</div>
+				</div><!-- end row -->
+				<div class="row center">
 					<div class="col s4 left-align">
 						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</a>
 					</div>
@@ -93,8 +111,8 @@
 					<div class="col s4">
 						&nbsp;
 					</div>
-				</div>
-			</div>
+				</div><!-- end row -->
+			</div><!-- end step -->
 
 			<div class="step hide generating">
 				<div class="row center">
@@ -109,9 +127,9 @@
 					<div class="input-field col s8">
 						<input type="password" id="generated-password" value="" />
 					</div>
-					<div class="switch col s4">
+					<div class="switch col s4 left-align">
 						<label>
-							<input type="checkbox" id="show-password"><span class="lever"></span> Show password
+							<input type="checkbox" class="show-password"><span class="lever"></span> Show password
 						</label>
 					</div>
 				</div>
