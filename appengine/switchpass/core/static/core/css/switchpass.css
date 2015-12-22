@@ -43,7 +43,7 @@
 
 /* Materialize CSS bug fixes */
 
-.btn i.material-icons{
+i.material-icons{
 	vertical-align: sub;
 }
 
