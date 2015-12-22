@@ -10,6 +10,7 @@
 			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
 			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
+			$("button.prev-step").on("click", sp.prevStepClick);
 			$("#show-password").on("change", sp.togglePasswordDisplay);
 			var $first_input = $(".step:first").find("input:first").focus();
 			sp.enableNextButtonIfValid.call($first_input[0]);
@@ -28,6 +29,10 @@
 			}else{
 				$this.closest(".step").addClass("hide").next().removeClass("hide").find("input:first").focus();
 			}
+		},
+
+		prevStepClick: function(){
+			$(this).closest(".step").addClass("hide").prev().removeClass("hide").find("input:first").focus();
 		},
 
 		enableNextButtonIfValid: function(){
