@@ -88,7 +88,7 @@
 					<h5 class="header col s12">Confirm Your Master Password</h5>
 					<p>
 						It looks like you're generating your password for
-						<span class="website-name">this website</span> for the first time, so it's
+						<span class="normalised-domain-name light italic">this website</span> for the first time, so it's
 						important that your master password is correct.
 					</p>
 					<div class="input-field col s8">
@@ -125,7 +125,7 @@
 
 			<div class="step hide result">
 				<div class="row center">
-					<h5>Your password for <span class="website-name">this website</span> is:</h5>
+					<h5>Your password for <span class="normalised-domain-name light italic">this website</span> is:</h5>
 					<div class="input-field col s8">
 						<input type="password" id="generated-password" value="" />
 					</div>
@@ -152,6 +152,9 @@
 	</div>
 </div>
 
-
-
 {% endblock main %}
+
+
+{% block pre_js %}
+	<script src="{{STATIC_URL}}jsSHA-2.0.1/sha512.js"></script>
+{% endblock %}

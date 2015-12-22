@@ -69,8 +69,10 @@
 		</div>
 	</footer>
 
+	{% block pre_js %}{% endblock %}
 	<script src="{{STATIC_URL}}jquery/jquery-2.1.1.min.js"></script>
 	<script src="{{STATIC_URL}}materialize/js/materialize.min.js"></script>
 	<script src="{{STATIC_URL}}core/js/switchpass.js"></script>
+	{% block post_js %}{% endblock %}
 </body>
 </html>

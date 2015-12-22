@@ -1,20 +1,66 @@
-/* Generator page */
+/* Generic Switchpass stuff that will be used across all implementations */
+
+var sp = {
+
+	normaliseDomain: function(domain_text){
+		// Given the text from the `domain` input, return the perceived domain name
+		// Note that this will need to be the same in all implementations
+		domain_text = domain_text.toLowerCase().trim();
+		if(/^https?:\/\//.test(domain_text) || /^[a-z0-9-][a-z0-9\.-]*\.[a-z]{2,}\/?/.test(domain_text)){
+			// If it looks like a domain name
+			domain_text = domain_text.replace(/^https?:\/\//, "").replace(/\/.*/, ""); // get only the domain bit
+			if(/^www\./.test(domain_text) && domain_text.match(/\./).length >= 2){
+				// If it starts with www. and www. is not the main part of the domain (e.g. it's not www.com)
+				domain_text = domain_text.replace(/^www\./, ""); // Strip out the leading www.
+			}
+
+		}
+		return domain_text;
+	},
+
+	generatePassword: function(domain_text, master_password){
+		// Here's where all the magic happens
+		var domain = sp.normaliseDomain(domain_text);
+		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 100000});
+		hashObj.update(domain);
+		hashObj.update(master_password);
+		var result = hashObj.getHash("B64");
+		result = result.slice(0, 20);
+		// Now give it as good a chance as possible of being accepted by fussy websites
+		result = result.replace(/\//g, "!"); // replace forward slashes with exclamation marks
+		if(result === result.toLowerCase()){ // If it's all lowercase
+			// Make the first character uppercase
+			result = result.slice(0, 1).toUpperCase() + result.slice(1, result.length);
+		}else if(result === result.toUpperCase()){ // If it's all uppercase
+			result = result.slice(0, 1).toLowerCase() + result.slice(1, result.length);
+			// Make the first character lowercase
+		}
+		if(!/!|\+/.test(result)){ // If it doesn't contain any punctuation
+			result += "!"; // Add an exclamation mark onto the end
+		}
+		return result;
+	}
+};
+
+
+/* Generator page UI */
 
 (function(){
 
-	var sp = {
+	var ui = {
 
 		init: function(){
-			$(".step:not(:last) input").on("keypress", sp.nextStepOnReturn);
-			$(".step:not(:last) input").on("keyup", sp.enableNextButtonIfValid);
-			$("#master-password-1").on("keyup", sp.updateStrengthOMeter).on("keyup", sp.updatePassword2RequiredLength);
-			$("#master-password-2").on("keyup", sp.updatePasswordsMatchIndicator);
-			$("button.next-step").on("click", sp.nextStepClick);
-			$("button.generate").on("click", sp.generateClick);
-			$("button.prev-step").on("click", sp.prevStepClick);
-			$(".show-password").on("change", sp.togglePasswordDisplay);
+			$(".step:not(:last) input").on("keypress", ui.nextStepOnReturn);
+			$(".step:not(:last) input").on("keyup", ui.enableNextButtonIfValid);
+			$("#domain-name").on("keyup", ui.updateNormalisedDomainName);
+			$("#master-password-1").on("keyup", ui.updateStrengthOMeter).on("keyup", ui.updatePassword2RequiredLength);
+			$("#master-password-2").on("keyup", ui.updatePasswordsMatchIndicator);
+			$("button.next-step").on("click", ui.nextStepClick);
+			$("button.generate").on("click", ui.generateClick);
+			$("button.prev-step").on("click", ui.prevStepClick);
+			$(".show-password").on("change", ui.togglePasswordDisplay);
 			var $first_input = $(".step:first").find("input:first").focus();
-			sp.enableNextButtonIfValid.call($first_input[0]);
+			ui.enableNextButtonIfValid.call($first_input[0]);
 		},
 
 		log: function(msg){
@@ -26,7 +72,7 @@
 		nextStepClick: function(){
 			var $this = $(this);
 			if($this.hasClass("disabled")){
-				sp.showErrorMessage.call($this.closest(".step").find("input:first"));
+				ui.showErrorMessage.call($this.closest(".step").find("input:first")[0]);
 			}else{
 				$this.closest(".step").addClass("hide").next().removeClass("hide").find("input:first").focus();
 			}
@@ -40,13 +86,13 @@
 			// If `this` <input> is valid then enable the "Next" button in this step
 			var $this = $(this);
 			var $button = $this.closest(".step").find("button.next-step,button.generate");
-			sp.log($button);
-			sp.log($button.hasClass("disabled"));
-			if(sp.isInputValid.call(this)){
+			ui.log($button);
+			ui.log($button.hasClass("disabled"));
+			if(ui.isInputValid.call(this)){
 				$button.removeClass("disabled");
 				// While we're here we also remove any error message which has been previously
 				// displayed (see showErrorMessage)
-				sp.hideErrorMessage.call(this);
+				ui.hideErrorMessage.call(this);
 			}else{
 				$button.addClass("disabled");
 			}
@@ -55,8 +101,8 @@
 		isInputValid: function(){
 			// Is the given input (`this`) valid?
 			var $this = $(this);
-			var validator = sp.inputValidators[$this.attr("id")];
-			sp.log(validator);
+			var validator = ui.inputValidators[$this.attr("id")];
+			ui.log(validator);
 			console.log("Is valid: " + validator($this));
 			return validator($this);
 		},
@@ -81,14 +127,20 @@
 
 		generateClick: function(){
 			// Event handler for when the "Generate" button is clicked
-			sp.nextStepClick.call(this); //trigger the showing of the next step as usual
+			ui.nextStepClick.call(this); //trigger the showing of the next step as usual
 			if(!$(this).hasClass("disabled")){
-				var password = sp.generatePassword();
-				$("#generated-password").val(password);
-				sp.copyPasswordToClipboard(password);
-				sp.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
-				$("#generated-password").select();
+				setTimeout(ui.generatePassword, 100);
 			}
+		},
+
+		generatePassword: function(){
+			// Separated only to allow us to delay it so that the UI can update *before* we
+			// set off the hashing algorithm
+			var password = sp.generatePassword($("#domain-name").val(), $("#master-password-1").val());
+			$("#generated-password").val(password);
+			ui.copyPasswordToClipboard(password);
+			ui.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
+			$("#generated-password").select();
 		},
 
 		copyPasswordToClipboard: function(password){
@@ -102,11 +154,6 @@
 			}
 		},
 
-		generatePassword: function(){
-			// Here's where all the magic happens
-			return "example" + Math.random();
-		},
-
 		togglePasswordDisplay: function(){
 			var $this = $(this);
 			var show = $this.is(":checked");
@@ -114,12 +161,16 @@
 			$this.closest(".step").find("input:first").attr("type", type);
 		},
 
+		updateNormalisedDomainName: function(){
+			$(".normalised-domain-name").text(sp.normaliseDomain($(this).val()));
+		},
+
 		updateStrengthOMeter: function(){
-			var strength = sp.getPasswordStrength($(this).val());
-			var colour = sp.getStrengthColour(strength);
-			sp.log("password: " + $(this).val());
-			sp.log("password legnth: " + String($(this).val().length));
-			sp.log(strength);
+			var strength = ui.getPasswordStrength($(this).val());
+			var colour = ui.getStrengthColour(strength);
+			ui.log("password: " + $(this).val());
+			ui.log("password legnth: " + String($(this).val().length));
+			ui.log(strength);
 			$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
 				.addClass(strength);
 			$(".strength-desc").addClass("hide");
@@ -192,9 +243,9 @@
 			var $this = $(this);
 			var this_val = $this.val();
 			if(this_val !== $("#master-password-1").val().slice(0, this_val.length)){
-				sp.showErrorMessage.call(this);
+				ui.showErrorMessage.call(this);
 			}else{
-				sp.hideErrorMessage.call(this);
+				ui.hideErrorMessage.call(this);
 			}
 		},
 
@@ -208,17 +259,17 @@
 				return Boolean($el.val().length);
 			},
 			"master-password-1": function($el){
-				var strength = sp.getPasswordStrength($el.val());
+				var strength = ui.getPasswordStrength($el.val());
 				return strength === "ok" || strength === "good";
 			},
 			"master-password-2": function($el){
 				return $el.val() === $("#master-password-1").val();
 			}
-		}
+		},
 
 	};
 
-	sp.init();
+	ui.init();
 })();
 
 
