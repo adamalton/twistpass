@@ -32,3 +32,8 @@
 #strength.good .progress div{
 	width: 100%;
 }
+
+.btn i.material-icons{
+	/* Hack to fix alignment - a bug in Materialize CSS really */
+	vertical-align: sub;
+}
