@@ -7,7 +7,8 @@
 		init: function(){
 			$(".step:not(:last) input").on("keypress", sp.nextStepOnReturn);
 			$(".step:not(:last) input").on("keyup", sp.enableNextButtonIfValid);
-			$("#master-password-1").on("keyup", sp.updateStrengthOMeter);
+			$("#master-password-1").on("keyup", sp.updateStrengthOMeter).on("keyup", sp.updatePassword2RequiredLength);
+			$("#master-password-2").on("keyup", sp.updatePasswordsMatchIndicator);
 			$("button.next-step").on("click", sp.nextStepClick);
 			$("button.generate").on("click", sp.generateClick);
 			$("button.prev-step").on("click", sp.prevStepClick);
@@ -184,6 +185,22 @@
 				case "good":
 					return "green";
 				}
+		},
+
+		updatePasswordsMatchIndicator: function(){
+			// Update an indiactor to show if the 2 passwords do(n't) match
+			var $this = $(this);
+			var this_val = $this.val();
+			if(this_val !== $("#master-password-1").val().slice(0, this_val.length)){
+				sp.showErrorMessage.call(this);
+			}else{
+				sp.hideErrorMessage.call(this);
+			}
+		},
+
+		updatePassword2RequiredLength: function(){
+			// Update the limit value for the "x/y" character counter on the master-password-2 input
+			$("#master-password-2").attr("length", $(this).val().length);
 		},
 
 		inputValidators: {
