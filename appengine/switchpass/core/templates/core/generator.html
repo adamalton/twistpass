@@ -126,7 +126,10 @@
 			<div class="step hide result">
 				<div class="row center">
 					<h5>Your password for <span class="normalised-domain-name light italic">this website</span> is:</h5>
-					<div class="input-field col s8">
+					<div class="col s4">
+						&nbsp;
+					</div>
+					<div class="input-field col s4">
 						<input type="password" id="generated-password" value="" />
 					</div>
 					<div class="switch col s4 left-align">
@@ -135,8 +138,15 @@
 						</label>
 					</div>
 				</div>
-				<div class="row center hide copied valign-wrapper green-text">
-					<i class="small material-icons">done</i> Copied to clipboard
+				<div class="row center hide copied green-text">
+					<i class="tiny material-icons">done</i> Copied to clipboard
+				</div>
+				<div class="row center not-copied">
+					<!-- Some browsers will reject the automatic copying to the clipboard because it
+						happens too long after the user-triggered "generate" event, hence we offer this
+						manual "Copy to clipboard" button
+					-->
+					<button type="button" id="copy" class="btn waves-effect waves-light orange">Copy to clipboard</button>
 				</div>
 				<div class="row center">
 

@@ -59,6 +59,7 @@ var sp = {
 			$("button.generate").on("click", ui.generateClick);
 			$("button.prev-step").on("click", ui.prevStepClick);
 			$(".show-password").on("change", ui.togglePasswordDisplay);
+			$("#copy").on("click", ui.copyPasswordToClipboard);
 			var $first_input = $(".step:first").find("input:first").focus();
 			ui.enableNextButtonIfValid.call($first_input[0]);
 		},
@@ -150,8 +151,10 @@ var sp = {
 			var success = document.execCommand("copy");
 			$temp.remove();
 			if(success){
+				$(".not-copied").addClass("hide");
 				$(".copied").removeClass("hide");
 			}
+			$("#generated-password").select(); // Select the input again
 		},
 
 		togglePasswordDisplay: function(){
