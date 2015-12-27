@@ -39,6 +39,21 @@ var sp = {
 			result += "!"; // Add an exclamation mark onto the end
 		}
 		return result;
+	},
+
+	timeGeneratePassword: function(domain_text, master_password){
+		var start = new Date().getTime();
+		result = sp.generatePassword(domain_text, master_password);
+		var time = ((new Date()).getTime() - start) / 1000;
+		sp.log("generatePassword took " + String(time) + " seconds");
+		ga('send', 'event', "web", "event", "hash_time_seconds", time);
+		return result;
+	},
+
+	log: function(msg){
+		if(typeof console !== "undefined"){
+			console.log(msg);
+		}
 	}
 };
 
@@ -64,12 +79,6 @@ var sp = {
 			ui.enableNextButtonIfValid.call($first_input[0]);
 		},
 
-		log: function(msg){
-			if(typeof console !== "undefined"){
-				console.log(msg);
-			}
-		},
-
 		nextStepClick: function(){
 			var $this = $(this);
 			if($this.hasClass("disabled")){
@@ -87,8 +96,8 @@ var sp = {
 			// If `this` <input> is valid then enable the "Next" button in this step
 			var $this = $(this);
 			var $button = $this.closest(".step").find("button.next-step,button.generate");
-			ui.log($button);
-			ui.log($button.hasClass("disabled"));
+			sp.log($button);
+			sp.log($button.hasClass("disabled"));
 			if(ui.isInputValid.call(this)){
 				$button.removeClass("disabled");
 				// While we're here we also remove any error message which has been previously
@@ -103,7 +112,7 @@ var sp = {
 			// Is the given input (`this`) valid?
 			var $this = $(this);
 			var validator = ui.inputValidators[$this.attr("id")];
-			ui.log(validator);
+			sp.log(validator);
 			console.log("Is valid: " + validator($this));
 			return validator($this);
 		},
@@ -137,7 +146,7 @@ var sp = {
 		generatePassword: function(){
 			// Separated only to allow us to delay it so that the UI can update *before* we
 			// set off the hashing algorithm
-			var password = sp.generatePassword($("#domain-name").val(), $("#master-password-1").val());
+			var password = sp.timeGeneratePassword($("#domain-name").val(), $("#master-password-1").val());
 			$("#generated-password").val(password);
 			ui.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
 			ui.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
@@ -172,9 +181,9 @@ var sp = {
 		updateStrengthOMeter: function(){
 			var strength = ui.getPasswordStrength($(this).val());
 			var colour = ui.getStrengthColour(strength);
-			ui.log("password: " + $(this).val());
-			ui.log("password legnth: " + String($(this).val().length));
-			ui.log(strength);
+			sp.log("password: " + $(this).val());
+			sp.log("password legnth: " + String($(this).val().length));
+			sp.log(strength);
 			$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
 				.addClass(strength);
 			$(".strength-desc").addClass("hide");
@@ -293,6 +302,12 @@ if(!/localhost/.test(document.location.href)){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-71748771-1', 'auto');
-	ga('send', 'pageview');
+}else{
+	function ga(a, b, c, d, e, f, g){
+		var arr = [a, b, c, d, e, f, g];
+		sp.log("[debug] Analytics call: [" + arr.join(", ") + "]");
+	}
 }
+
+ga('create', 'UA-71748771-1', 'auto');
+ga('send', 'pageview');
