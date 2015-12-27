@@ -130,3 +130,9 @@ CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
 
 from djangae.contrib.gauth.settings import *
+CACHES = {
+    'default': {
+        # This is overrideen in settings_live
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}

@@ -19,3 +19,9 @@ SECURE_CHECKS += ["switchpass.site.checks.check_csp_sources_not_unsafe"]
 
 DEBUG = False
 TEMPLATE_DEBUG = False
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+    }
+}

@@ -4,6 +4,10 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
+
+default_expiration: "1h"
+
+
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup|internalupload).*
@@ -15,9 +19,15 @@ handlers:
   static_dir: sitepackages/django/contrib/admin/static/admin/
   secure: always
 
+# For development only
+- url: /static/core/
+  static_dir: switchpass/core/static/core/
+  secure: always
+
 - url: /static/
   static_dir: staticcollected/
   secure: always
+
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
