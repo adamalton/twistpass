@@ -139,12 +139,13 @@ var sp = {
 			// set off the hashing algorithm
 			var password = sp.generatePassword($("#domain-name").val(), $("#master-password-1").val());
 			$("#generated-password").val(password);
-			ui.copyPasswordToClipboard(password);
+			ui.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
 			ui.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
 			$("#generated-password").select();
 		},
 
-		copyPasswordToClipboard: function(password){
+		copyPasswordToClipboard: function(){
+			var password = $("#generated-password").val();
 			var $temp = $("<input>");
 			$("body").append($temp);
 			$temp.val(password).select();
