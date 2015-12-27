@@ -272,7 +272,9 @@ var sp = {
 
 	};
 
-	ui.init();
+	if($("#generator-page").length){
+		ui.init();
+	}
 })();
 
 
