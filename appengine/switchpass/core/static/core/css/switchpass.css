@@ -40,6 +40,14 @@
 	margin-left: 6px;
 }
 
+.icon-block h2 img{
+	max-width: 25px;
+	max-height: 25px;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	vertical-align: sub; /* This is compensating for the i.material-icons stuff, which one of the images is using */
+}
+
 
 /* Materialize CSS bug fixes */
 
