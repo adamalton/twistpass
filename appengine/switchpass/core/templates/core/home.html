@@ -2,87 +2,83 @@
 {% block main %}
 
 <div class="section no-pad-bot" id="index-banner">
-		<div class="container">
-			<br><br>
-			<h1 class="header center orange-text">Switchpass</h1>
-			<div class="row center">
-				<h5 class="header col s12 light">We don't remember your passwords, and neither should you.</h5>
-			</div>
-			<div class="row center">
-				<p>
-					Switchpass takes a single password from you and modifies it to give you a
-					unique password for each website that you use.
-				</p>
-				<p>
-					We never store any of the passwords, but our algorithm is always able to
-					re-generate them from your master password.
-				</p>
-			</div>
-			<div class="row center">
-				<p>
-					<a href="{% url 'generator' %}" class="btn-large waves-effect waves-light orange">Take me to the generator!</a>
-				</p>
-				<p>
-					<a href="{% url 'how_it_works' %}">How It Works</a>
-				</p>
-			</div>
-			<br><br>
-
-		</div>
-	</div>
-
-
 	<div class="container">
-		<div class="section">
-
-			<!--   Icon Section   -->
-			<div class="row">
-				<div class="col s12 m4">
-					<div class="icon-block">
-						<h2 class="center">
-							<img src="{{STATIC_URL}}core/img/chrome.svg" alt="Google Chrome logo" />
-						</h2>
-						<h5 class="center light-blue-text">Chrome Extension</h5>
-
-						<p class="light">
-							The Google Chrome plugin will make it even easier to generate your passwords,
-							meaning you won't even need to leave your browser.&nbsp; Coming soon!
-						</p>
-					</div>
-				</div>
-
-				<div class="col s12 m4">
-					<div class="icon-block">
-						<h2 class="center">
-							<img src="{{STATIC_URL}}core/img/firefox.svg" alt="Firefox logo" />
-						</h2>
-						<h5 class="center light-blue-text">Firefox Extension</h5>
-
-						<p class="light">
-							The Firefox plugin will make it even easier to generate your passwords,
-							meaning you won't even need to leave your browser.&nbsp; Coming soon!
-						</p>
-					</div>
-				</div>
-
-				<div class="col s12 m4">
-					<div class="icon-block">
-						<h2 class="center"><i class="material-icons">stay_current_portrait</i></h2>
-						<h5 class="center light-blue-text">Mobile Apps</h5>
-
-						<p class="light">
-							If SwapPass is successful then iOS and Android apps will be created too.&nbsp;
-							Want this to happen sooner?  Send some feedback.
-						</p>
-					</div>
-				</div>
-			</div>
-
+		<br><br>
+		<h1 class="header center orange-text">Switchpass</h1>
+		<div class="row center">
+			<h5 class="header col s12 light">We don't remember your passwords, and neither should you.</h5>
+		</div>
+		<div class="row center">
+			<p>
+				Switchpass takes a single password from you and modifies it to give you a
+				unique password for each website that you use.
+			</p>
+			<p>
+				We never store any of the passwords, but our algorithm is always able to
+				re-generate them from your master password.
+			</p>
+		</div>
+		<div class="row center">
+			<p>
+				<a href="{% url 'generator' %}" class="btn-large waves-effect waves-light orange">Take me to the generator!</a>
+			</p>
+			<p>
+				<a href="{% url 'how_it_works' %}">How It Works</a>
+			</p>
 		</div>
 		<br><br>
 
-		<div class="section">
-
-		</div>
 	</div>
+</div>
+
+
+<div class="container">
+	<div class="section">
+
+		<!--   Icon Section   -->
+		<div class="row">
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center">
+						<img src="{{STATIC_URL}}core/img/chrome.svg" alt="Google Chrome logo" />
+					</h2>
+					<h5 class="center light-blue-text">Chrome Extension</h5>
+
+					<p class="light">
+						The Google Chrome plugin will make it even easier to generate your passwords,
+						meaning you won't even need to leave your browser.&nbsp; Coming soon!
+					</p>
+				</div>
+			</div>
+
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center">
+						<img src="{{STATIC_URL}}core/img/firefox.svg" alt="Firefox logo" />
+					</h2>
+					<h5 class="center light-blue-text">Firefox Extension</h5>
+
+					<p class="light">
+						The Firefox plugin will make it even easier to generate your passwords,
+						meaning you won't even need to leave your browser.&nbsp; Coming soon!
+					</p>
+				</div>
+			</div>
+
+			<div class="col s12 m4">
+				<div class="icon-block">
+					<h2 class="center"><i class="material-icons">stay_current_portrait</i></h2>
+					<h5 class="center light-blue-text">Mobile Apps</h5>
+
+					<p class="light">
+						If SwapPass is successful then iOS and Android apps will be created too.&nbsp;
+						Want this to happen sooner?  Send some feedback.
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<br><br>
+</div>
 {% endblock main %}
