@@ -11,9 +11,6 @@ def home(request):
 @cache_page(60 * 60)
 def generator(request):
     """ The page with the actual password generator. """
-    print ""
-    print "Chicken"
-    print ""
     return render(request, "core/generator.html", {})
 
 
