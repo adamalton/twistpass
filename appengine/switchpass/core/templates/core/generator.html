@@ -7,7 +7,7 @@
 			<br><br>
 			<h2 class="header center orange-text">Generate A Password</h2>
 
-			<div class="step">
+			<div class="step domain" data-step-name="domain">
 				<div class="row center">
 					<h5 class="header col s12">What Website Do You Want To Generate A Password For?</h5>
 					<div class="input-field col l8 s12">
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 
-			<div class="step hide">
+			<div class="step master1 hide" data-step-name="master1">
 				<div class="row center">
 					<h5 class="header col s12">Enter Your Master Password</h5>
 					<div class="input-field col l8 s12">
@@ -82,7 +82,7 @@
 				</div>
 			</div><!-- end step -->
 
-			<div class="step hide">
+			<div class="step master2 hide" data-step-name="master2">
 				<div class="row center">
 					<h5 class="header col s12">Confirm Your Master Password</h5>
 					<div class="input-field col l8 s12">
@@ -107,7 +107,7 @@
 						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</a>
 					</div>
 					<div class="col l4 s8 right-align">
-						<button type="button" class="btn waves-effect waves-light orange disabled generate">Generate password</button>
+						<button type="button" class="btn waves-effect waves-light orange disabled next-step">Generate password</button>
 					</div>
 					<div class="col s4">
 						&nbsp;
@@ -115,14 +115,14 @@
 				</div><!-- end row -->
 			</div><!-- end step -->
 
-			<div class="step hide generating">
+			<div class="step hide generate" data-step-name="generate">
 				<div class="row center">
 					<h5>Generating<span>.</span><span>.</span><span>.</span></h5>
 				</div>
 			</div>
 
 
-			<div class="step hide result">
+			<div class="step hide result" data-step-name="result">
 				<div class="row center">
 					<h5>Your password for <span class="normalised-domain-name light italic">this website</span> is:</h5>
 					<div class="input-field col s12">

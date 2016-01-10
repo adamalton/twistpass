@@ -64,234 +64,395 @@ var sp = {
 
 	var ui = {
 
+		generatedPassword: null,
+
 		init: function(){
-			$(".step:not(:last) input").on("keypress", ui.nextStepOnReturn);
-			$(".step:not(:last) input").on("keyup", ui.enableNextButtonIfValid);
-			$("#domain-name").on("keyup", ui.updateNormalisedDomainName);
-			$("#master-password-1").on("keyup", ui.updateStrengthOMeter).on("keyup", ui.updatePassword2RequiredLength);
-			$("#master-password-2").on("keyup", ui.updatePasswordsMatchIndicator);
-			$("button.next-step").on("click", ui.nextStepClick);
-			$("button.generate").on("click", ui.generateClick);
-			$("button.prev-step").on("click", ui.prevStepClick);
-			$(".show-password").on("change", ui.togglePasswordDisplay);
-			$("#copy").on("click", ui.copyPasswordToClipboard);
-			var $first_input = $(".step:first").find("input:first").focus();
-			ui.enableNextButtonIfValid.call($first_input[0]);
+			ui.steps.common.init();
+			ui.steps.domain.init();
+			ui.steps.master1.init();
+			ui.steps.master2.init();
+			ui.steps.generate.init();
+			ui.steps.result.init();
+
+			ui.steps.domain.load(); // This step is what's initially displayed
 		},
 
-		nextStepClick: function(){
-			var $this = $(this);
-			if($this.hasClass("disabled")){
-				ui.showErrorMessage.call($this.closest(".step").find("input:first")[0]);
-			}else{
-				$this.closest(".step").addClass("hide").next().removeClass("hide").find("input:first").focus();
-			}
-		},
+		steps: {
+			// Functionality which is discrete to each step
+			// ============================================
 
-		prevStepClick: function(){
-			$(this).closest(".step").addClass("hide").prev().removeClass("hide").find("input:first").focus();
-		},
+			common: {
+				// Ok, not all of the functionality is discrete to each step!
+				// ==========================================================
 
-		enableNextButtonIfValid: function(){
-			// If `this` <input> is valid then enable the "Next" button in this step
-			var $this = $(this);
-			var $button = $this.closest(".step").find("button.next-step,button.generate");
-			sp.log($button);
-			sp.log($button.hasClass("disabled"));
-			if(ui.isInputValid.call(this)){
-				$button.removeClass("disabled");
-				// While we're here we also remove any error message which has been previously
-				// displayed (see showErrorMessage)
-				ui.hideErrorMessage.call(this);
-			}else{
-				$button.addClass("disabled");
-			}
-		},
+				init: function(){
+					$("button.prev-step").on("click", ui.dom.showPrevioiusStep);
+					$(".show-password").on("change", ui.dom.togglePasswordDisplay);
+				},
 
-		isInputValid: function(){
-			// Is the given input (`this`) valid?
-			var $this = $(this);
-			var validator = ui.inputValidators[$this.attr("id")];
-			sp.log(validator);
-			console.log("Is valid: " + validator($this));
-			return validator($this);
-		},
-
-		nextStepOnReturn: function(e){
-			// When the return key is pressed, continue to the next step if this step is valid
-			if(e.keyCode === 13){
-				var $button = $(this).closest(".step").find("button.next-step,button.generate");
-				$button.trigger("click");
-			}
-		},
-
-		showErrorMessage: function(){
-			// Show the error message for the given input (`this`).  We only do this when the user
-			// tries to continue to the next step, we don't update it continuously as they type.
-			$(this).addClass("invalid");
-		},
-
-		hideErrorMessage: function(){
-			$(this).removeClass("invalid");
-		},
-
-		generateClick: function(){
-			// Event handler for when the "Generate" button is clicked
-			ui.nextStepClick.call(this); //trigger the showing of the next step as usual
-			if(!$(this).hasClass("disabled")){
-				setTimeout(ui.generatePassword, 100);
-			}
-		},
-
-		generatePassword: function(){
-			// Separated only to allow us to delay it so that the UI can update *before* we
-			// set off the hashing algorithm
-			var password = sp.timeGeneratePassword($("#domain-name").val(), $("#master-password-1").val());
-			$("#generated-password").val(password);
-			ui.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
-			ui.nextStepClick.call($(".generating")[0]); //reveal the final 'result' step
-			$("#generated-password").select();
-		},
-
-		copyPasswordToClipboard: function(){
-			var password = $("#generated-password").val();
-			var $temp = $("<input>");
-			$("body").append($temp);
-			$temp.val(password).select();
-			var success = document.execCommand("copy");
-			$temp.remove();
-			if(success){
-				$(".not-copied").addClass("hide");
-				$(".copied").removeClass("hide");
-			}
-			$("#generated-password").select(); // Select the input again
-		},
-
-		togglePasswordDisplay: function(){
-			var $this = $(this);
-			var show = $this.is(":checked");
-			var type = show === true ? "text" : "password";
-			$this.closest(".step").find("input:first").attr("type", type);
-		},
-
-		updateNormalisedDomainName: function(){
-			$(".normalised-domain-name").text(sp.normaliseDomain($(this).val()));
-		},
-
-		updateStrengthOMeter: function(){
-			var strength = ui.getPasswordStrength($(this).val());
-			var colour = ui.getStrengthColour(strength);
-			sp.log("password: " + $(this).val());
-			sp.log("password legnth: " + String($(this).val().length));
-			sp.log(strength);
-			$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
-				.addClass(strength);
-			$(".strength-desc").addClass("hide");
-			$(".strength-desc." + strength).removeClass("hide");
-			$("#strength .progress div").removeClass("grey red orange blue green").addClass(colour);
-		},
-
-		getPasswordStrength: function(password){
-			// Very basic alorithm for determining roughly how "strong" a password is.
-			// Ignores unicode and whether or not things are dictionary words
-			var num_possible_chars = 26;
-			var num_possibilities;
-
-			if(password.length === 0){
-				return "nothing";
-			}
-
-			if(password.toLowerCase() !== password && password.toUpperCase() !== password){
-				num_possible_chars += 26;
-			}
-			// Does the password contain any unicode characters?
-			if(/[^\u0000-\u00ff]/.test(password)){
-				// This theorectically opens up the number of possibilities hugely, but the
-				// likelihood is that there are only a few characters that people will commonly
-				// use, therefore we only increase the number of possible characters by 10
-				num_possible_chars += 10;
-			}
-			// Does the password contain any digits?
-			if(/[0-9]/.test(password)){
-				num_possible_chars += 10;
-			}
-			num_possibilities = Math.pow(num_possible_chars, password.length);
-
-			if(num_possibilities < 10000000000){
-				return "pathetic";
-			}else if(num_possibilities < 1000000000000){
-				return "very-weak";
-			}else if(num_possibilities < 1000000000000000000){
-				return "weak";
-			}else if(num_possibilities < 100000000000000000000000){
-				return "borderline";
-			}else if(num_possibilities < 100000000000000000000000000000){
-				return "ok";
-			}
-			return "good";
-		},
-
-		getStrengthColour: function(strength){
-			// Given a strength as a string, e.g. "weak", return a CSS class for the colour
-			switch(strength) {
-				case "nothing":
-					return "grey";
-				case "pathetic":
-					return "red";
-				case "very-weak":
-					return "red";
-				case "weak":
-					return "orange";
-				case "borderline":
-					return "orange";
-				case "ok":
-					return "blue";
-				case "good":
-					return "green";
+				submitOnReturn: function(e){
+					// When the return key is pressed, continue to the next step if this step is valid
+					if(e.keyCode === 13){
+						var step_name = $(this).closest(".step").data("step-name");
+						ui.steps[step_name].submit();
+					}
 				}
-		},
-
-		updatePasswordsMatchIndicator: function(e){
-			// Nasty edge case:
-			// If the keystroke that triggered this function was the return key then we don't want
-			// to clear the error message, otherwise hitting return when the passwords don't match
-			// attempts to submit this step, submission is refused, error message is shown, error
-			// message is immediately cleared again
-			if(e.keyCode === 13){
-				return;
-			}
-
-			// Update an indiactor to show if the 2 passwords do(n't) match
-			var $this = $(this);
-			var this_val = $this.val();
-			if(this_val !== $("#master-password-1").val().slice(0, this_val.length)){
-				ui.showErrorMessage.call(this);
-			}else{
-				ui.hideErrorMessage.call(this);
-			}
-		},
-
-		updatePassword2RequiredLength: function(){
-			// Update the limit value for the "x/y" character counter on the master-password-2 input
-			$("#master-password-2").attr("length", $(this).val().length);
-		},
-
-		inputValidators: {
-			"domain-name": function($el){
-				return Boolean($el.val().length);
 			},
-			"master-password-1": function($el){
-				var strength = ui.getPasswordStrength($el.val());
-				return strength === "ok" || strength === "good";
+
+			domain: {
+				init: function(){
+					// Called when the entire UI is first loaded (i.e. on page load)
+					var input = $("#domain-name");
+					ui.steps.domain.input = input;
+					input.on("keypress", ui.steps.common.submitOnReturn);
+					input.on("keyup", ui.steps.domain.validate);
+					input.on("keyup", ui.dom.updateNormalisedDomainName);
+					var button = $(".step.domain button").eq(0);
+					ui.steps.domain.button = button;
+					button.on("click", ui.steps.domain.submit);
+				},
+
+				load: function(){
+					// Called when this step is (re-)displayed
+					ui.steps.domain.input.focus();
+					// If the user refreshes the page then the 'domain' input may be pre-populated,
+					// so validate what's in there to start with.
+					ui.steps.domain.validate();
+				},
+
+				validate: function(){
+					// Peform validation and update the UI of this step accordingly.
+					// Returns the result of isValid() for convenience.
+					var is_valid = ui.steps.domain.isValid();
+					if(is_valid){
+						ui.steps.domain.button.removeClass("disabled");
+						ui.steps.domain.input.removeClass("invalid");
+					}else{
+						ui.steps.domain.button.addClass("disabled");
+						// Note that we don't show an error message on the input unless the user
+						// tries to submit the step
+					}
+					return is_valid;
+				},
+
+				submit: function(){
+					// Called when the user (tries to) submit(s) this step
+					if(ui.steps.domain.validate()){
+						ui.dom.showStep("master1");
+					}else{
+						// Display of the error message is only done here when the user tries
+						// to subit the step, not every time we validate, which is on each keystroke
+						ui.steps.domain.input.addClass("invalid");
+					}
+				},
+
+				isValid: function(){
+					return Boolean(ui.steps.domain.input.val().length);
+				}
 			},
-			"master-password-2": function($el){
-				return $el.val() === $("#master-password-1").val();
+
+			master1: {
+				init: function(){
+					// Called when the entire UI is first loaded (i.e. on page load)
+					var input = $("#master-password-1");
+					ui.steps.master1.input = input;
+					input.on("keypress", ui.steps.common.submitOnReturn);
+					input.on("keyup", ui.steps.master1.validate);
+					input.on("keyup", ui.steps.master1.updateStrengthOMeter);
+					input.on("keyup", ui.steps.master1.updateMaster2RequiredLength);
+					var button= $(".step.master1 button.next-step").eq(0);
+					ui.steps.master1.button = button;
+					button.on("click", ui.steps.master1.submit);
+				},
+
+				load: function(){
+					// Called when this step is (re-)displayed
+					ui.steps.master1.input.focus();
+
+				},
+
+				validate: function(){
+					// Peform validation and update the UI of this step accordingly.
+					// Returns the result of isValid() for convenience.
+					var is_valid = ui.steps.master1.isValid();
+					if(is_valid){
+						ui.steps.master1.button.removeClass("disabled");
+						ui.steps.master1.input.removeClass("invalid");
+					}else{
+						ui.steps.master1.button.addClass("disabled");
+						// Note that we don't show an error message on the input unless the user
+						// tries to submit the step
+					}
+					return is_valid;
+				},
+
+				submit: function(){
+					// Called when the user (tries to) submit(s) this step
+					if(ui.steps.master1.validate()){
+						ui.dom.showStep("master2");
+					}else{
+						// Display of the error message is only done here when the user tries
+						// to subit the step, not every time we validate, which is on each keystroke
+						ui.steps.master1.input.addClass("invalid");
+					}
+				},
+
+				isValid: function(){
+					var strength = ui.steps.master1.getPasswordStrength();
+					return strength === "ok" || strength === "good";
+				},
+
+				getPasswordStrength: function(){
+					// Very basic alorithm for determining roughly how "strong" a password is.
+					// Ignores unicode and whether or not things are dictionary words
+					var password = ui.steps.master1.input.val();
+					var num_possible_chars = 26;
+					var num_possibilities;
+
+					if(password.length === 0){
+						return "nothing";
+					}
+
+					if(password.toLowerCase() !== password && password.toUpperCase() !== password){
+						num_possible_chars += 26;
+					}
+					// Does the password contain any unicode characters?
+					if(/[^\u0000-\u00ff]/.test(password)){
+						// This theorectically opens up the number of possibilities hugely, but the
+						// likelihood is that there are only a few characters that people will commonly
+						// use, therefore we only increase the number of possible characters by 10
+						num_possible_chars += 10;
+					}
+					// Does the password contain any digits?
+					if(/[0-9]/.test(password)){
+						num_possible_chars += 10;
+					}
+					num_possibilities = Math.pow(num_possible_chars, password.length);
+
+					if(num_possibilities < 10000000000){
+						return "pathetic";
+					}else if(num_possibilities < 1000000000000){
+						return "very-weak";
+					}else if(num_possibilities < 1000000000000000000){
+						return "weak";
+					}else if(num_possibilities < 100000000000000000000000){
+						return "borderline";
+					}else if(num_possibilities < 100000000000000000000000000000){
+						return "ok";
+					}
+					return "good";
+				},
+
+				getStrengthColour: function(strength){
+					// Given a strength as a string, e.g. "weak", return a CSS class for the colour
+					switch(strength) {
+						case "nothing":
+							return "grey";
+						case "pathetic":
+							return "red";
+						case "very-weak":
+							return "red";
+						case "weak":
+							return "orange";
+						case "borderline":
+							return "orange";
+						case "ok":
+							return "blue";
+						case "good":
+							return "green";
+						}
+				},
+
+				updateStrengthOMeter: function(){
+					var strength = ui.steps.master1.getPasswordStrength();
+					var colour = ui.steps.master1.getStrengthColour(strength);
+					sp.log("password: " + $(this).val());
+					sp.log("password legnth: " + String($(this).val().length));
+					sp.log(strength);
+					$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
+						.addClass(strength);
+					$(".strength-desc").addClass("hide");
+					$(".strength-desc." + strength).removeClass("hide");
+					$("#strength .progress div").removeClass("grey red orange blue green").addClass(colour);
+				},
+
+				updateMaster2RequiredLength: function(){
+					ui.steps.master2.updateRequiredLengthDisplay(ui.steps.master1.input.val().length);
+				}
+			},
+
+			master2: {
+				init: function(){
+					// Called when the entire UI is first loaded (i.e. on page load)
+					var input = $("#master-password-2");
+					ui.steps.master2.input = input;
+					input.on("keypress", ui.steps.common.submitOnReturn);
+					input.on("keyup", ui.steps.master2.validate);
+					input.on("keyup", ui.steps.master2.updatePasswordsMatchIndicator);
+					var button= $(".step.master2 button.next-step").eq(0);
+					ui.steps.master2.button = button;
+					button.on("click", ui.steps.master2.submit);
+				},
+
+				load: function(){
+					// Called when this step is (re-)displayed
+					ui.steps.master2.input.focus();
+
+				},
+
+				validate: function(){
+					// Peform validation and update the UI of this step accordingly.
+					// Returns the result of isValid() for convenience.
+					var is_valid = ui.steps.master2.isValid();
+					if(is_valid){
+						ui.steps.master2.button.removeClass("disabled");
+						ui.steps.master2.input.removeClass("invalid");
+					}else{
+						ui.steps.master2.button.addClass("disabled");
+						// Note that we don't show an error message on the input unless the user
+						// tries to submit the step
+					}
+					return is_valid;
+				},
+
+				submit: function(){
+					// Called when the user (tries to) submit(s) this step
+					if(ui.steps.master2.validate()){
+						ui.dom.showStep("generate");
+					}else{
+						// Display of the error message is only done here when the user tries
+						// to subit the step, not every time we validate, which is on each keystroke
+						ui.steps.master2.input.addClass("invalid");
+					}
+				},
+
+				isValid: function(){
+					return ui.steps.master2.input.val() === ui.steps.master1.input.val();
+				},
+
+				updateRequiredLengthDisplay: function(length){
+					// Update the limit value for the "x/y" character counter on the master-password-2 input
+					ui.steps.master2.input.attr("length", length);
+				},
+
+				updatePasswordsMatchIndicator: function(e){
+					// Nasty edge case:
+					// If the keystroke that triggered this function was the return key then we don't want
+					// to clear the error message, otherwise hitting return when the passwords don't match
+					// attempts to submit this step, submission is refused, error message is shown, error
+					// message is immediately cleared again
+					if(e.keyCode === 13){
+						return;
+					}
+
+					// Detect if the confirmation password is correct *so far*, and if not show an error msg
+					var this_val = ui.steps.master2.input.val();
+					if(this_val !== ui.steps.master1.input.val().slice(0, this_val.length)){
+						sp.log("invalid");
+						ui.steps.master2.input.addClass("invalid");
+					}else{
+						sp.log("valid");
+						ui.steps.master2.input.removeClass("invalid");
+					}
+				},
+			},
+
+			generate: {
+				init: function(){
+					// Called when the entire UI is first loaded (i.e. on page load)
+					var button= $(".step.generate button.next-step").eq(0);
+					ui.steps.generate.button = button;
+					button.on("click", ui.steps.generate.submit);
+				},
+
+				load: function(){
+					// Called when this step is (re-)displayed
+					// We need to let the UI finish switching to this step before we start the
+					// hashing algoirthm, otherwise it doesn't update
+					setTimeout(ui.steps.generate.generatePassword, 100);
+				},
+
+				submit: function(){
+					// Called when the user (tries to) submit(s) this step
+				},
+
+				generatePassword: function(){
+					// Separated only to allow us to delay it so that the UI can update *before* we
+					// set off the hashing algorithm
+					ui.generatedPassword = sp.timeGeneratePassword(
+						ui.steps.domain.input.val(), // Normalisation is done for us
+						ui.steps.master1.input.val()
+					);
+					ui.dom.showStep("result");
+				}
+			},
+
+			result: {
+				init: function(){
+					// Called when the entire UI is first loaded (i.e. on page load)
+					var input = $("#generated-password");
+					ui.steps.result.input = input;
+					$("#copy").on("click", ui.dom.copyPasswordToClipboard);
+				},
+
+				load: function(){
+					// Called when this step is (re-)displayed
+					ui.steps.result.input.val(ui.generatedPassword).select();
+					ui.dom.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
+				},
+
+				submit: function(){
+					// Called when the user (tries to) submit(s) this step
+				}
 			}
 		},
 
+		dom: {
+			// General functions for manipulating the page UI
+			// ==============================================
+			showStep: function(step){
+				// Show the given step, hiding the others
+				$(".step").addClass("hide");
+				$(".step." + step).removeClass("hide");
+				ui.steps[step].load();
+			},
+
+			showPrevioiusStep: function(){
+				var previous_step_name = $(".step:not(.hide)").prev().data("step-name");
+				ui.dom.showStep(previous_step_name);
+			},
+
+			updateNormalisedDomainName: function(){
+				// Update the various bits of the page which say "Your password for {domain-name}".
+				$(".normalised-domain-name").text(sp.normaliseDomain(ui.steps.domain.input.val()));
+			},
+
+			togglePasswordDisplay: function(){
+				// Arguably the part of this which works out whether to show or hide the password
+				// (rather than the part which manipulates the DOM) should be in ui.steps.common
+				var $this = $(this);
+				var show = $this.is(":checked");
+				var type = show === true ? "text" : "password";
+				$this.closest(".step").find("input:first").attr("type", type);
+			},
+
+			copyPasswordToClipboard: function(){
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val(ui.generatedPassword).select();
+				var success = document.execCommand("copy");
+				$temp.remove();
+				if(success){
+					$(".not-copied").addClass("hide");
+					$(".copied").removeClass("hide");
+				}
+				$(ui.steps.result.input).select(); // Select the input again
+			}
+		}
 	};
 
 	if($("#generator-page").length){
+		// If we're on the generator page
 		ui.init();
 	}
 })();
