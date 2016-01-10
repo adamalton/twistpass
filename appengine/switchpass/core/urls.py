@@ -5,4 +5,9 @@ urlpatterns = patterns(
     url(r'^$', 'home', name='home'),
     url(r'^generator/$', 'generator', name='generator'),
     url(r'^how-it-works/$', 'how_it_works', name='how_it_works'),
+
+    url(r'^feedback/$', 'feedback', name='feedback'),
+    url(r'^tips/$', 'tips', name='tips'),
+    url(r'^faq/$', 'faq', name='faq'),
+    url(r'^learn/$', 'learn', name='learn'),
 )

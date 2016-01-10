@@ -21,3 +21,26 @@ def generator(request):
 def how_it_works(request):
     """ Page which explains how Switchpass works. """
     return render(request, "core/how_it_works.html", {})
+
+
+@cache_page(60 * 60)
+def feedback(request):
+    """ Page that links to the Google Form where users can submit feedback. """
+    return render(request, "core/feedback.html", {})
+
+
+@cache_page(60 * 60)
+def tips(request):
+    """ Tips for how to create a strong master password. """
+    return render(request, "core/tips.html", {})
+
+
+@cache_page(60 * 60)
+def faq(request):
+    return render(request, "core/faq.html", {})
+
+
+@cache_page(60 * 60)
+def learn(request):
+    """ Root page for the articles section of the site. """
+    return render(request, "core/learn.html", {})
