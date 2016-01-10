@@ -1,5 +1,17 @@
+# THIRD PARTY
+from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
+
+
+def cache_page_bypass(*args, **kwargs):
+    """ No-op replacement for Django's @cache_page decorator. """
+    def decorator(function):
+        return function
+    return decorator
+
+if settings.DEBUG:
+    cache_page = cache_page_bypass
 
 
 @cache_page(60 * 60)
