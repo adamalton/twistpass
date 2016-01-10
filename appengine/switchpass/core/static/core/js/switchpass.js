@@ -50,6 +50,16 @@ var sp = {
 		return result;
 	},
 
+	hashDomain: function(domain_text){
+		// Used for keeping a local store of the previously-used domains, this function returns
+		// a hash of the normalised domain so that we're not storing the domains in plain text.
+		// (Easy to rainbow table for commonly-used sites, but might as well do it anyway)
+		var domain = sp.normaliseDomain(domain_text);
+		var hashObj = new jsSHA("SHA-512", "TEXT");
+		hashObj.update(domain);
+		return hashObj.getHash("B64");
+	},
+
 	log: function(msg){
 		if(typeof console !== "undefined"){
 			console.log(msg);
@@ -64,6 +74,8 @@ var sp = {
 var ui = {
 
 	generatedPassword: null,
+	currentDomainHash: null,
+	domainHasBeenUsedBefore: false,
 
 	init: function(){
 		ui.steps.common.init();
@@ -138,6 +150,7 @@ var ui = {
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
 				if(ui.steps.domain.validate()){
+					ui.steps.domain.checkIfDomainHasBeenUsedBefore();
 					ui.dom.showStep("master1");
 				}else{
 					// Display of the error message is only done here when the user tries
@@ -148,6 +161,15 @@ var ui = {
 
 			isValid: function(){
 				return Boolean(ui.steps.domain.input.val().length);
+			},
+
+			checkIfDomainHasBeenUsedBefore: function(){
+				// See if the user has previously generated a password for this domain, and update
+				// ui.domainHasBeenUsedBefore accordingly
+				var previous_hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
+				// For a bit of extra privacy we store hashes of the previously used domains
+				ui.currentDomainHash = sp.hashDomain(ui.steps.domain.input.val());
+				ui.domainHasBeenUsedBefore = previous_hashes.indexOf(ui.currentDomainHash) != -1;
 			}
 		},
 
@@ -169,6 +191,15 @@ var ui = {
 				// Called when this step is (re-)displayed
 				ui.analytics.logStep("master1");
 				ui.steps.master1.input.focus();
+				// Update the submit button to say "Next" or "Generate" depending on whether or not
+				// we need to show the master password confirmation step
+				ui.steps.master1.button.find("span").addClass("hide");
+
+				if(ui.domainHasBeenUsedBefore){
+					ui.steps.master1.button.find("span.generate-text").removeClass("hide");
+				}else{
+					ui.steps.master1.button.find("span.next-text").removeClass("hide");
+				}
 
 			},
 
@@ -190,7 +221,14 @@ var ui = {
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
 				if(ui.steps.master1.validate()){
-					ui.dom.showStep("master2");
+					// Depending on whether or not the user has generated a password for this
+					// domain or not before we either want to show the master password confirmation
+					// step, or just generate the password
+					if(ui.domainHasBeenUsedBefore){
+						ui.dom.showStep("generate");
+					}else{
+						ui.dom.showStep("master2");
+					}
 				}else{
 					// Display of the error message is only done here when the user tries
 					// to subit the step, not every time we validate, which is on each keystroke
@@ -386,7 +424,19 @@ var ui = {
 					ui.steps.domain.input.val(), // Normalisation is done for us
 					ui.steps.master1.input.val()
 				);
+				ui.steps.generate.addDomainToPreviouslyUsedList();
 				ui.dom.showStep("result");
+			},
+
+			addDomainToPreviouslyUsedList: function(){
+				// Store the domain of the password that we've generated so that we don't ask the
+				// user to confirm the master password for it next time
+				var hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
+				sp.log("hashes...");
+				sp.log(hashes);
+				sp.log(typeof hashes);
+				hashes.push(sp.hashDomain(ui.steps.domain.input.val()));
+				localStorage.setItem("previously-used-domain-hashes", JSON.stringify(hashes));
 			}
 		},
 
