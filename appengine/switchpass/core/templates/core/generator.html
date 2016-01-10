@@ -21,8 +21,8 @@
 						</p>
 					</div>
 				</div>
-				<div class="row center">
-					<div class="col s12">
+				<div class="row right-align">
+					<div class="col l8 s12">
 						<button type="button" class="btn waves-effect waves-light disabled orange next-step">Next</button>
 					</div>
 				</div>
@@ -31,12 +31,6 @@
 			<div class="step hide">
 				<div class="row center">
 					<h5 class="header col s12">Enter Your Master Password</h5>
-					<p class="red-text center">
-						It is <strong>vital</strong> that this is so obscure that no one (human or
-						machine) will <strong>ever</strong> come up with the same password.
-						<a>Why?</a><br />
-
-					</p>
 					<div class="input-field col l8 s12">
 						<div>
 							<input id="master-password-1" type="password" />
@@ -66,6 +60,11 @@
 							</label>
 						</div>
 						<p>
+							It is <strong>vital</strong> that this is so obscure that no one (human or
+							machine) will <strong>ever</strong> come up with the same password.
+							<a>Why?</a>
+						</p>
+						<p>
 							<a>Tips for creating your master password</a>
 						</p>
 					</div>
@@ -74,7 +73,7 @@
 					<div class="col s4 left-align">
 						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</button>
 					</div>
-					<div class="col s4">
+					<div class="col l4 s8 right-align">
 						<button type="button" class="btn waves-effect waves-light disabled orange next-step">Next</button>
 					</div>
 					<div class="col s4">
@@ -86,11 +85,6 @@
 			<div class="step hide">
 				<div class="row center">
 					<h5 class="header col s12">Confirm Your Master Password</h5>
-					<p>
-						It looks like you're generating your password for
-						<span class="normalised-domain-name light italic">this website</span> for the first time, so it's
-						important that your master password is typed correctly.
-					</p>
 					<div class="input-field col l8 s12">
 						<input id="master-password-2" type="password" length="0" />
 						<label for="master-password-2" data-error="This does not match what you typed before">Confirm Master Password</label>
@@ -101,13 +95,18 @@
 								<input type="checkbox" class="show-password" /><span class="lever"></span> Show password
 							</label>
 						</div>
+						<p>
+							It looks like you're generating your password for
+							<span class="normalised-domain-name light italic">this website</span> for the first time, so it's
+							important that your master password is typed correctly.
+						</p>
 					</div>
 				</div><!-- end row -->
 				<div class="row center">
 					<div class="col s4 left-align">
 						<button type="button" class="btn waves-effect waves-light white orange-text prev-step">Back</a>
 					</div>
-					<div class="col s4">
+					<div class="col l4 s8 right-align">
 						<button type="button" class="btn waves-effect waves-light orange disabled generate">Generate password</button>
 					</div>
 					<div class="col s4">
@@ -126,13 +125,10 @@
 			<div class="step hide result">
 				<div class="row center">
 					<h5>Your password for <span class="normalised-domain-name light italic">this website</span> is:</h5>
-					<div class="col s4">
-						&nbsp;
-					</div>
-					<div class="input-field col l4 s8">
+					<div class="input-field col s12">
 						<input type="password" id="generated-password" value="" />
 					</div>
-					<div class="switch col l4 s12 left-align">
+					<div class="switch col s12">
 						<label>
 							<input type="checkbox" class="show-password"><span class="lever"></span> Show password
 						</label>

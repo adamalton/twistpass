@@ -48,6 +48,12 @@
 	vertical-align: sub; /* This is compensating for the i.material-icons stuff, which one of the images is using */
 }
 
+#generated-password, #generated-password:focus{
+	border:0;
+	box-shadow:none;
+	text-align: center;
+}
+
 
 /* Materialize CSS bug fixes */
 
