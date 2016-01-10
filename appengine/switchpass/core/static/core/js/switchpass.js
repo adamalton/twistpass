@@ -251,7 +251,16 @@ var sp = {
 				}
 		},
 
-		updatePasswordsMatchIndicator: function(){
+		updatePasswordsMatchIndicator: function(e){
+			// Nasty edge case:
+			// If the keystroke that triggered this function was the return key then we don't want
+			// to clear the error message, otherwise hitting return when the passwords don't match
+			// attempts to submit this step, submission is refused, error message is shown, error
+			// message is immediately cleared again
+			if(e.keyCode === 13){
+				return;
+			}
+
 			// Update an indiactor to show if the 2 passwords do(n't) match
 			var $this = $(this);
 			var this_val = $this.val();
