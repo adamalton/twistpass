@@ -1,3 +1,6 @@
+   This copyright notice applies only to the portions of this software which
+   were originally part of the djangae-scaffold library.
+
    Copyright 2014 Potato London Ltd.
 
    Licensed under the Apache License, Version 2.0 (the "License");
