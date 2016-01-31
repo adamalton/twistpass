@@ -1,4 +1,4 @@
-from swappass.settings import *
+from swappass.site.settings import *
 
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 2592000 #30 days
