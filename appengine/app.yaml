@@ -28,6 +28,11 @@ handlers:
   static_dir: staticcollected/
   secure: always
 
+# robots.txt
+- url: /(.+\.(txt))$
+  static_files: \1
+  upload: /root/.*$
+
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
