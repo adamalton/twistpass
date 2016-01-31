@@ -137,4 +137,4 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = (".appspot.com", "swapppass.com", "www.swappass.com")
+ALLOWED_HOSTS = (".appspot.com", "swappass.com", "www.swappass.com")
