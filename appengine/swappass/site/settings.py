@@ -58,6 +58,7 @@ MIDDLEWARE_CLASSES = (
     'csp.middleware.CSPMiddleware',
     'session_csrf.CsrfMiddleware',
     'djangosecure.middleware.SecurityMiddleware',
+    'swappass.site.middleware.DomainRedirectMiddlware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -138,3 +139,7 @@ CACHES = {
 }
 
 ALLOWED_HOSTS = (".appspot.com", "swappass.com", "www.swappass.com")
+
+DOMAIN_REDIRECTS = {
+    "www.swappass.com": "swappass.com",
+}
