@@ -16,5 +16,5 @@ urlpatterns = patterns('',
 
     # url(r'^auth/', include('djangae.contrib.gauth.urls')),
 
-    url(r'^', include('switchpass.core.urls')),
+    url(r'^', include('swappass.core.urls')),
 )

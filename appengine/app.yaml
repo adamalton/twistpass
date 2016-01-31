@@ -1,4 +1,4 @@
-application: switchpass
+application: swappass
 version: 1
 runtime: python27
 api_version: 1
@@ -11,7 +11,7 @@ default_expiration: "1h"
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup|internalupload).*
-  script: switchpass.site.wsgi.application
+  script: swappass.site.wsgi.application
   login: admin
   secure: always
 
@@ -21,7 +21,7 @@ handlers:
 
 # For development only
 - url: /static/core/
-  static_dir: switchpass/core/static/core/
+  static_dir: swappass/core/static/core/
   secure: always
 
 - url: /static/
@@ -31,12 +31,12 @@ handlers:
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
-  script: switchpass.site.wsgi.application
+  script: swappass.site.wsgi.application
   secure: always
   login: admin
 
 - url: /.*
-  script: switchpass.site.wsgi.application
+  script: swappass.site.wsgi.application
   secure: always
 
 skip_files:

@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>Switchpass | The password multiplier</title>
+	<title>SwapPass | The password multiplier</title>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="{{STATIC_URL}}materialize/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection" />
-	<link href="{{STATIC_URL}}core/css/switchpass.css" rel="stylesheet" type="text/css" media="screen,projection" />
+	<link href="{{STATIC_URL}}core/css/swappass.css" rel="stylesheet" type="text/css" media="screen,projection" />
 </head>
 <body>
 
@@ -14,8 +14,8 @@
 	<nav class="light-blue lighten-1" role="navigation">
 		<div class="nav-wrapper container">
 			<a id="logo-container" href="{% url 'home' %}" class="brand-logo">
-				<img src="{{STATIC_URL}}core/img/switchpass-logo-orange.svg" alt="Switchpass logo" />
-				Switchpass
+				<img src="{{STATIC_URL}}core/img/swappass-logo-orange.svg" alt="SwapPass logo" />
+				SwapPass
 			</a>
 			<ul class="right hide-on-med-and-down">
 				<li><a href="{% url 'generator' %}">Generate A Password</a></li>
@@ -68,7 +68,7 @@
 	{% block pre_js %}{% endblock %}
 	<script src="{{STATIC_URL}}jquery/jquery-2.1.1.min.js"></script>
 	<script src="{{STATIC_URL}}materialize/js/materialize.min.js"></script>
-	<script src="{{STATIC_URL}}core/js/switchpass.js"></script>
+	<script src="{{STATIC_URL}}core/js/swappass.js"></script>
 	{% block post_js %}{% endblock %}
 </body>
 </html>

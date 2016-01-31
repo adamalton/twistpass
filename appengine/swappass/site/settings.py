@@ -1,5 +1,5 @@
 """
-Django settings for switchpass project.
+Django settings for swappass project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -45,8 +45,8 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
     # 'djangae.contrib.uniquetool',
-    'switchpass.core',
-    'switchpass.site',
+    'swappass.core',
+    'swappass.site',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -78,8 +78,8 @@ SECURE_CHECKS = [
     "djangosecure.check.djangosecure.check_sts",
     "djangosecure.check.djangosecure.check_frame_deny",
     "djangosecure.check.djangosecure.check_ssl_redirect",
-    "switchpass.site.checks.check_session_csrf_enabled",
-    "switchpass.site.checks.check_csp_is_not_report_only"
+    "swappass.site.checks.check_session_csrf_enabled",
+    "swappass.site.checks.check_csp_is_not_report_only"
 ]
 
 CSP_REPORT_URI = reverse_lazy('report_csp')
@@ -88,9 +88,9 @@ CSP_REPORTS_LOG_LEVEL = 'warning'
 CSP_REPORTS_SAVE = True
 CSP_REPORTS_EMAIL_ADMINS = False
 
-ROOT_URLCONF = 'switchpass.site.urls'
+ROOT_URLCONF = 'swappass.site.urls'
 
-WSGI_APPLICATION = 'switchpass.site.wsgi.application'
+WSGI_APPLICATION = 'swappass.site.wsgi.application'
 
 
 # Internationalization

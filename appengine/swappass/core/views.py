@@ -28,7 +28,7 @@ def generator(request):
 
 @cache_page(60 * 60)
 def how_it_works(request):
-    """ Page which explains how Switchpass works. """
+    """ Page which explains how SwapPass works. """
     return render(request, "core/how_it_works.html", {})
 
 

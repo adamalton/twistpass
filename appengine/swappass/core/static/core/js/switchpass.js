@@ -1,4 +1,4 @@
-/* Generic Switchpass stuff that will be used across all implementations */
+/* Generic SwapPass stuff that will be used across all implementations */
 
 var sp = {
 
