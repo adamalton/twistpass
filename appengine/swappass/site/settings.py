@@ -136,3 +136,5 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+ALLOWED_HOSTS = (".appspot.com", "swapppass.com", "www.swappass.com")
