@@ -2,6 +2,14 @@
 
 var sp = {
 
+	// This salt has nothing to do with password security, it's for copyright protection.
+	// When SwapPass becomes amazingly popular and is used by billions of people around the world
+	// and nasty opportunists start to make their own compatible knock-offs with adverts or malware
+	// in them, this salt will allow us to have them taken down, because while the concept of
+	// SwapPass is not patented, the code itself is protected by copyright, and this salt ensures
+	// that any compatible knock-off is (by the fact that it is compatible) in breach of copyright.
+	sillySalt: "SxeMIZqM8fMlKZh4K6UzsZu45o3x6rK3yp3DXu2fu53ZHn6",
+
 	normaliseDomain: function(domain_text){
 		// Given the text from the `domain` input, return the perceived domain name
 		// Note that this will need to be the same in all implementations
@@ -24,6 +32,7 @@ var sp = {
 		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 100000});
 		hashObj.update(domain);
 		hashObj.update(master_password);
+		hashObj.update(sp.sillySalt);
 		var result = hashObj.getHash("B64");
 		result = result.slice(0, 20);
 		// Now give it as good a chance as possible of being accepted by fussy websites
