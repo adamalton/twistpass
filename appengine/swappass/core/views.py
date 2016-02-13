@@ -1,5 +1,6 @@
 # THIRD PARTY
 from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
@@ -53,3 +54,8 @@ def faq(request):
 def learn(request):
     """ Root page for the articles section of the site. """
     return render(request, "core/learn.html", {})
+
+
+def keep_alive(request):
+    """ Un-cached view which is called by the cron to keep the App Engine instance alive. """
+    return HttpResponse("ok")

@@ -1,0 +1,4 @@
+cron:
+- description: Keep alive
+  url: /keep-alive/
+  schedule: every 1 minutes
