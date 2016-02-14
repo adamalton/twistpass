@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+{% block main %}
+
+<div class="section no-pad-bot" id="index-banner">
+	<div class="container">
+		<h1 class="header center orange-text">How It Works</h1>
+		<p>
+			Explaination of the 1-way algorithm and how it generates a different password for each site.<br />
+			* The password that it generates for each site
+		</p>
+		<h2>How Do I Use It?</h2>
+		<p>
+			Each time you find yourself signing up to yet another website and you need a password, use SwapPass to generate a you a unique password for that site using your master password.&nbsp;
+			Then each time you need to log into that site, just return to SwapPass, enter your master password and the name of the site, and it will tell you what your password for that site is.&nbsp;
+			You will have the security benefit of having a different password for every website that you use, but you will only ever have to remember your one master password.
+		</p>
+		{% comment %}
+		<h2>Can It Generate Passwords to Fit Particular Requirements?</h2>
+		<p>
+			Some websites require that your password to fit certain criteria.&nbsp;
+			SwapPass guarantees that each password it generates for you will contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and 1 punctuation character.&nbsp;
+			However, because SwapPass uses a strict mathematical algorithm instead of remembering your passwords for you, it cannot alter the passwords that it creates for you to meet other arbitrary criteria.&nbsp;
+			But don't let that put you off SwapPass, let it
+		<h2>Is It Secure?</h2>
+		<h2>Why Should I Have a Different Password for Every Website</h2>
+		{% endcomment %}
+		<br><br>
+	</div>
+</div>
+
+
+{% endblock main %}
