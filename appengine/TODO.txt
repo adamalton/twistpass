@@ -1,0 +1,4 @@
+* Explanation that the algorithm is non reversible.
+* Explanation that if you increase your password length slightly you make it massively more secure.
+* Explain that the algorithm is public and therefore more secure because no one can crack it.
+* Add a link from the master2 step to an explaination of why you need to type the password twice if you haven't generated it for this domain before.
