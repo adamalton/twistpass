@@ -79,7 +79,7 @@ SECURE_CHECKS = [
     "djangosecure.check.djangosecure.check_sts",
     "djangosecure.check.djangosecure.check_frame_deny",
     "djangosecure.check.djangosecure.check_ssl_redirect",
-    "swappass.site.checks.check_session_csrf_enabled",
+    # "swappass.site.checks.check_session_csrf_enabled",
     "swappass.site.checks.check_csp_is_not_report_only"
 ]
 
