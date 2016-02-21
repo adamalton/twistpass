@@ -46,11 +46,6 @@ def tips(request):
 
 
 @cache_page(60 * 60)
-def faq(request):
-    return render(request, "core/faq.html", {})
-
-
-@cache_page(60 * 60)
 def learn(request):
     """ Root page for the articles section of the site. """
     return render(request, "core/learn.html", {})

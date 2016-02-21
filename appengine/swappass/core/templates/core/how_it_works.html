@@ -3,38 +3,97 @@
 
 <div class="section no-pad-bot" id="index-banner">
 	<div class="container">
-		<h1 class="header center orange-text">How It Works & Frequently Asked Questions</h1>
+		<h1 class="header center orange-text">How It Works</h1>
+
+		<div class="row">
+			<div class="col l6 m6 s12">
+				<h5 class="light-blue-text center">The Problem</h5>
+				<p class="card-panel">
+					You've probably heard or been told that you should use a different password for each
+					website that you use and that the passwords should be complex and non-guessable.&nbsp;
+					But remembering all of those passwords is not something that most of us are capable
+					of.&nbsp;
+				</p>
+			</div>
+			<div class="col l6 m6 s12">
+				<h5 class="light-blue-text center">What SwapPass Is</h5>
+				<p class="card-panel">
+					SwapPass is a free tool that lets you have a different password for each website that
+					you use, while only having to remember one of them.
+				</p>
+			</div>
+		</div>
+		<h5 class="light-blue-text center">How It Works</h5>
+		<div class="card-panel">
+			<p>
+				SwapPass takes 2 pieces of data: your one memorised password, and the domain name of a
+				website; and puts them through a one-way mathematical algorithm to produce a unique
+				result, which is a password that you can use for that website.&nbsp;
+				Each time you enter your memorised password and the same domain name, SwapPass will
+				produce exactly the same result.&nbsp; This means that although it never stores any of
+				your data, it can always regenerate any of your passwords for you.&nbsp;
+			</p>
+		</div>
+		<div class="section">{# gives top & bottom space, which the previous 3 blocks get from the 'row' #}
+			<h5 class="light-blue-text center">Security</h5>
+			<div class="card-panel">
+				<p>
+					The algorithm is mathematically irreversible, meaning that if you log in to a
+					malicious website, they can't use the generated password that you give them to
+					calculate what your master password is.&nbsp;
+					However, they could still use a process of trial and error in which they keep
+					entering guesses of your master password into SwapPass until they get a result
+					which matches your generated password that you gave them.&nbsp;
+					It is for this reason that your master password should be long and obscure.
+				</p>
+			</div>
+		</div>
+
+		<h1 class="header center orange-text section">Frequently Asked Questions</h1>
+		<div class="section">
+			<h5 class="light-blue-text">How Do I Use It?</h5>
+			<p>
+				Each time you find yourself signing up to yet another website and you need a password, use SwapPass to generate a you a unique password for that site using your master password.&nbsp;
+				Then each time you need to log into that site, just return to SwapPass, enter your master password and the name of the site, and it will tell you what your password for that site is.&nbsp;
+				You will have the security benefit of having a different password for every website that you use, but you will only ever have to remember your one master password.
+			</p>
+		</div>
+		<div class="section">
+			<h5 class="light-blue-text">Can It Generate Passwords to Fit Particular Requirements?</h5>
+			<p>
+				Some websites require that your password to fit certain criteria.&nbsp;
+				SwapPass guarantees that each password it generates for you will contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and 1 punctuation character.&nbsp;
+				However, because SwapPass never remembers your generated passwords, it cannot alter
+				them to meet other arbitrary criteria.
+			</p>
+			{% comment %}
+			<p>
+				But don't let that put you off SwapPass, let it put you off the websites with
+				those requirements.&nbsp;
+			</p>
+			{% endcomment %}
+		</div>
+		<div class="section">
+			<h5 class="light-blue-text">How Do I Know I Can Trust SwapPass?</h5>
+			<p>
+				We never transfers any of your data to our severs.&nbsp; Don't believe us? Go to
+				the Generator page and then turn off your wifi/data connection - it still works!
+			</p>
+			<p>
+				Still don't believe us?  If you (or someone you know) can understand HTML and
+				Javascript code then you can inspect the source code of the site.&nbsp; For ease of
+				viewing, you can find the code on
+				<a href="https://github.com/adamalton/swappass">GitHub</a>.
+			</p>
+		</div>
+
 		{% comment %}
-		<p>
-			Explaination of the 1-way algorithm and how it generates a different password for each site.<br />
-		</p>
-		{% endcomment %}
-		<h2>How Do I Use It?</h2>
-		<p>
-			Each time you find yourself signing up to yet another website and you need a password, use SwapPass to generate a you a unique password for that site using your master password.&nbsp;
-			Then each time you need to log into that site, just return to SwapPass, enter your master password and the name of the site, and it will tell you what your password for that site is.&nbsp;
-			You will have the security benefit of having a different password for every website that you use, but you will only ever have to remember your one master password.
-		</p>
-
-		<h2>Can It Generate Passwords to Fit Particular Requirements?</h2>
-		<p>
-			Some websites require that your password to fit certain criteria.&nbsp;
-			SwapPass guarantees that each password it generates for you will contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and 1 punctuation character.&nbsp;
-			However, because SwapPass never remembers your generated passwords, it cannot alter
-			them to meet other arbitrary criteria.
-		</p>
-		{% comment %}
-		<p>
-			But don't let that put you off SwapPass, let it put you off the websites with
-			those requirements.&nbsp;
-		</p>
-		{% endcomment %}
-
-		{% comment %}
-		<h2>Is It Secure?</h2>
+		<h5 class="light-blue-text">Is It Secure?</h5>
 
 
-		<h2>Why Should I Have a Different Password for Every Website</h2>
+		<h5 class="light-blue-text">Why Should I Have a Different Password for Every Website</h5>
+
+		<h5 class="light-blue-text">Rotating / Changing passwords</h5>
 		{% endcomment %}
 		<br><br>
 	</div>
