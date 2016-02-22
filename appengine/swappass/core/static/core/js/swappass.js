@@ -283,9 +283,9 @@ var ui = {
 					return "very-weak";
 				}else if(num_possibilities < 1000000000000000000){
 					return "weak";
-				}else if(num_possibilities < 100000000000000000000000){
+				}else if(num_possibilities < 18921600000000000000000){ // A trillion attempts per second for 600 years
 					return "borderline";
-				}else if(num_possibilities < 100000000000000000000000000000){
+				}else if(num_possibilities < 189216000000000000000000000000){
 					return "ok";
 				}
 				return "good";
