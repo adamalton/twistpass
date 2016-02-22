@@ -54,6 +54,11 @@
 	text-align: center;
 }
 
+.boost-text{
+	font-size: 115%;
+	font-weight: 300;
+}
+
 
 /* Materialize CSS bug fixes */
 
