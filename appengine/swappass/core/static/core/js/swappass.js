@@ -29,7 +29,7 @@ var sp = {
 	generatePassword: function(domain_text, master_password){
 		// Here's where all the magic happens
 		var domain = sp.normaliseDomain(domain_text);
-		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 50000});
+		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 20000});
 		hashObj.update(domain);
 		hashObj.update(master_password);
 		hashObj.update(sp.sillySalt);
