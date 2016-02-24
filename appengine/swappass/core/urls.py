@@ -8,7 +8,7 @@ urlpatterns = patterns(
 
     url(r'^feedback/$', 'feedback', name='feedback'),
     url(r'^tips/$', 'tips', name='tips'),
-    url(r'^learn/$', 'learn', name='learn'),
+    # url(r'^learn/$', 'learn', name='learn'),
 
     url(r'^keep-alive/$', 'keep_alive', name='keep_alive'),
 )
