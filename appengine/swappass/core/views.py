@@ -15,37 +15,40 @@ if settings.DEBUG:
     cache_page = cache_page_bypass
 
 
-@cache_page(60 * 60)
+CACHE_TIME = 50 * 60
+
+
+@cache_page(CACHE_TIME)
 def home(request):
     """ Root of the site. """
     return render(request, "core/home.html", {})
 
 
-@cache_page(60 * 60)
+@cache_page(CACHE_TIME)
 def generator(request):
     """ The page with the actual password generator. """
     return render(request, "core/generator.html", {})
 
 
-@cache_page(60 * 60)
+@cache_page(CACHE_TIME)
 def how_it_works(request):
     """ Page which explains how SwapPass works. """
     return render(request, "core/how_it_works.html", {})
 
 
-@cache_page(60 * 60)
+@cache_page(CACHE_TIME)
 def feedback(request):
     """ Page that links to the Google Form where users can submit feedback. """
     return render(request, "core/feedback.html", {})
 
 
-@cache_page(60 * 60)
+@cache_page(CACHE_TIME)
 def tips(request):
     """ Tips for how to create a strong master password. """
     return render(request, "core/tips.html", {})
 
 
-@cache_page(60 * 60)
+@cache_page(CACHE_TIME)
 def learn(request):
     """ Root page for the articles section of the site. """
     return render(request, "core/learn.html", {})
