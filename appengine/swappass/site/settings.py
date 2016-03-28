@@ -33,11 +33,11 @@ TEMPLATE_DEBUG = True
 
 INSTALLED_APPS = (
     'djangae', # Djangae needs to come before django apps in django 1.7 and above
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangosecure',
     'csp',
@@ -47,14 +47,16 @@ INSTALLED_APPS = (
     # 'djangae.contrib.uniquetool',
     'swappass.core',
     'swappass.site',
+    'letsencryptae',
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.csrf.CsrfViewMiddleware',
     'djangae.contrib.security.middleware.AppEngineSecurityMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',
+    'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'csp.middleware.CSPMiddleware',
     # 'session_csrf.CsrfMiddleware',
     'djangosecure.middleware.SecurityMiddleware',
@@ -62,14 +64,14 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    # "django.contrib.auth.context_processors.auth",
+    "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
-    # "django.contrib.messages.context_processors.messages",
-    "session_csrf.context_processor"
+    "django.contrib.messages.context_processors.messages",
+    # "session_csrf.context_processor"
 )
 
 SECURE_CHECKS = [
