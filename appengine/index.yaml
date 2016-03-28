@@ -32,3 +32,8 @@ indexes:
   properties:
   - name: app
   - name: name
+
+- kind: letsencryptae_secret
+  properties:
+  - name: __key__
+    direction: desc
