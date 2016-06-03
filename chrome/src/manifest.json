@@ -1,0 +1,32 @@
+{
+	"manifest_version": 2,
+
+	"name": "SwapPass",
+	"short_name": "Swap Pass",
+	"description": "We don't remember your passwords, and neither should you.",
+	"version": "1.0",
+
+	"icons": {
+		"16": "img/swappass-logo-orange.svg",
+		"48": "img/swappass-logo-orange.svg",
+		"128": "img/swappass-logo-orange.svg"
+	},
+
+	"background": {
+		"persistent": false,
+		"scripts": ["swappass.js", "swappass-chrome.js"]
+	},
+
+	"options_ui": {
+		"page": "options.html",
+		"chrome_style": true
+	},
+
+	"permissions": [
+		"activeTab",
+		"declarativeContent",
+		"webNavigation",
+		"storage",
+		"<all_urls>"
+	]
+}
