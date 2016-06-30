@@ -7,6 +7,9 @@ threadsafe: true
 
 default_expiration: "5m"
 
+builtins:
+- remote_api: on
+
 
 handlers:
 
@@ -33,6 +36,11 @@ handlers:
   static_files: \1
   upload: /root/.*$
 
+
+# Allow Let's Encrypt ACME URL to be access on plain HTTP, otherwise renewing certificates after
+# they've expired is a pain
+- url: /\.well-known/acme-challenge/
+  script: swappass.site.wsgi.application
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
