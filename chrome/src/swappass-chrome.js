@@ -442,7 +442,23 @@ var ui = {
 };
 
 
+var chromeExt = {
+	init: function(){
+		chrome.tabs.query(
+			{currentWindow: true, active: true},
+			chromeExt.getTabsCallback
+		);
+	},
 
+	getTabsCallback: function(tabs){
+		// We expect to be given an array with 1 tab
+		if(tabs && tabs.length === 1 && tabs[0].url){
+			ui.steps.domain.input.val(tabs[0].url);
+			ui.steps.domain.validate();
+		}
+
+	}
+};
 
 
 // Google Analytics
@@ -462,5 +478,5 @@ ga('create', 'UA-71748771-1', 'auto');
 ga('send', 'pageview');
 
 
-
+chromeExt.init();
 ui.init();
