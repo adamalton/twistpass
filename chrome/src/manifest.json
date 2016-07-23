@@ -12,9 +12,9 @@
 		"128": "img/swappass-logo-orange.svg"
 	},
 
-	"background": {
-		"persistent": false,
-		"scripts": ["swappass.js", "swappass-chrome.js"]
+	"browser_action": {
+		"default_icon": "img/swappass-logo-orange.svg",
+		"default_popup": "popup.html"
 	},
 
 	"options_ui": {
