@@ -1,4 +1,4 @@
-# SwapPass
+# TwistPass
 
 A tool that lets you use a single password as the "salt" to generate a different password for every website or service that you use.
 

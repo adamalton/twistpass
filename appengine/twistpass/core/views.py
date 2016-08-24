@@ -36,7 +36,7 @@ def generator(request):
 @cache_control(public=True)
 @cache_page(CACHE_TIME)
 def how_it_works(request):
-    """ Page which explains how SwapPass works. """
+    """ Page which explains how TwistPass works. """
     return render(request, "core/how_it_works.html", {})
 
 

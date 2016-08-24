@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 
-	"name": "SwapPass",
-	"short_name": "Swap Pass",
+	"name": "TwistPass",
+	"short_name": "TwistPass",
 	"description": "We don't remember your passwords, and neither should you.",
 	"version": "1.0",
 
