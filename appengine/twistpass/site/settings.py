@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'cspreports',
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
+    'djangae.contrib.contenttypes',
     # 'djangae.contrib.uniquetool',
     'twistpass.core',
     'twistpass.site',
