@@ -6,7 +6,7 @@
 	<title>SwapPass | The password variator</title>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="{{STATIC_URL}}materialize/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection" />
-	<link href="{{STATIC_URL}}core/css/swappass.css" rel="stylesheet" type="text/css" media="screen,projection" />
+	<link href="{{STATIC_URL}}core/css/twistpass.css" rel="stylesheet" type="text/css" media="screen,projection" />
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 	<nav class="light-blue lighten-1" role="navigation">
 		<div class="nav-wrapper container">
 			<a id="logo-container" href="{% url 'home' %}" class="brand-logo">
-				<img src="{{STATIC_URL}}core/img/swappass-logo-orange.svg" alt="SwapPass logo" />
+				<img src="{{STATIC_URL}}core/img/twistpass-logo-orange.svg" alt="SwapPass logo" />
 				SwapPass
 			</a>
 			<ul class="right hide-on-med-and-down">
@@ -42,7 +42,7 @@
 					<ul>
 						<li><a class="white-text" href="{% url 'feedback' %}">Send feedback</a></li>
 						<li><a class="white-text" href="#!">Send beer</a></li>
-						<li><a class="white-text" href="https://github.com/adamalton/swappass">View the source code on GitHub</a></li>
+						<li><a class="white-text" href="https://github.com/adamalton/twistpass">View the source code on GitHub</a></li>
 
 					</ul>
 
@@ -68,7 +68,7 @@
 	{% block pre_js %}{% endblock %}
 	<script src="{{STATIC_URL}}jquery/jquery-2.1.1.min.js"></script>
 	<script src="{{STATIC_URL}}materialize/js/materialize.min.js"></script>
-	<script src="{{STATIC_URL}}core/js/swappass.js"></script>
+	<script src="{{STATIC_URL}}core/js/twistpass.js"></script>
 	<script src="{{STATIC_URL}}core/js/ui.js"></script>
 	{% block post_js %}{% endblock %}
 </body>

@@ -1,5 +1,5 @@
 """
-Django settings for swappass project.
+Django settings for twistpass project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -45,8 +45,8 @@ INSTALLED_APPS = (
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
     # 'djangae.contrib.uniquetool',
-    'swappass.core',
-    'swappass.site',
+    'twistpass.core',
+    'twistpass.site',
     'letsencryptae',
 )
 
@@ -60,7 +60,7 @@ MIDDLEWARE_CLASSES = (
     'csp.middleware.CSPMiddleware',
     # 'session_csrf.CsrfMiddleware',
     'djangosecure.middleware.SecurityMiddleware',
-    'swappass.site.middleware.DomainRedirectMiddlware',
+    'twistpass.site.middleware.DomainRedirectMiddlware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -81,8 +81,8 @@ SECURE_CHECKS = [
     "djangosecure.check.djangosecure.check_sts",
     "djangosecure.check.djangosecure.check_frame_deny",
     "djangosecure.check.djangosecure.check_ssl_redirect",
-    # "swappass.site.checks.check_session_csrf_enabled",
-    "swappass.site.checks.check_csp_is_not_report_only"
+    # "twistpass.site.checks.check_session_csrf_enabled",
+    "twistpass.site.checks.check_csp_is_not_report_only"
 ]
 
 CSP_REPORT_URI = reverse_lazy('report_csp')
@@ -91,9 +91,9 @@ CSP_REPORTS_LOG_LEVEL = 'warning'
 CSP_REPORTS_SAVE = True
 CSP_REPORTS_EMAIL_ADMINS = False
 
-ROOT_URLCONF = 'swappass.site.urls'
+ROOT_URLCONF = 'twistpass.site.urls'
 
-WSGI_APPLICATION = 'swappass.site.wsgi.application'
+WSGI_APPLICATION = 'twistpass.site.wsgi.application'
 
 
 # Internationalization
@@ -140,8 +140,8 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = (".appspot.com", "swappass.com", "www.swappass.com")
+ALLOWED_HOSTS = (".appspot.com", "twistpass.com", "www.twistpass.com")
 
 DOMAIN_REDIRECTS = {
-    "www.swappass.com": "swappass.com",
+    "www.twistpass.com": "twistpass.com",
 }

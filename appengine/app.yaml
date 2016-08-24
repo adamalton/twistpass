@@ -14,7 +14,7 @@ builtins:
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup|internalupload).*
-  script: swappass.site.wsgi.application
+  script: twistpass.site.wsgi.application
   login: admin
   secure: always
 
@@ -24,7 +24,7 @@ handlers:
 
 # For development only
 - url: /static/core/
-  static_dir: swappass/core/static/core/
+  static_dir: twistpass/core/static/core/
   secure: always
 
 - url: /static/
@@ -40,16 +40,16 @@ handlers:
 # Allow Let's Encrypt ACME URL to be access on plain HTTP, otherwise renewing certificates after
 # they've expired is a pain
 - url: /\.well-known/acme-challenge/
-  script: swappass.site.wsgi.application
+  script: twistpass.site.wsgi.application
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
-  script: swappass.site.wsgi.application
+  script: twistpass.site.wsgi.application
   secure: always
   login: admin
 
 - url: /.*
-  script: swappass.site.wsgi.application
+  script: twistpass.site.wsgi.application
   secure: always
 
 skip_files:

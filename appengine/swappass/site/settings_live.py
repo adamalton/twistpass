@@ -1,4 +1,4 @@
-from swappass.site.settings import *
+from twistpass.site.settings import *
 
 SESSION_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 2592000 #30 days
@@ -16,7 +16,7 @@ SECURE_REDIRECT_EXEMPT = [
     r"^keep-alive/",
 ]
 
-SECURE_CHECKS += ["swappass.site.checks.check_csp_sources_not_unsafe"]
+SECURE_CHECKS += ["twistpass.site.checks.check_csp_sources_not_unsafe"]
 
 DEBUG = False
 TEMPLATE_DEBUG = False
