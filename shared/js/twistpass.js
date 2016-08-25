@@ -1,6 +1,6 @@
 /* Generic TwistPass stuff that will be used across all implementations */
 
-var sp = {
+var tp = {
 
 	// This salt has nothing to do with password security, it's for copyright protection.
 	// When TwistPass becomes amazingly popular and is used by billions of people around the world
@@ -28,11 +28,11 @@ var sp = {
 
 	generatePassword: function(domain_text, master_password){
 		// Here's where all the magic happens
-		var domain = sp.normaliseDomain(domain_text);
+		var domain = tp.normaliseDomain(domain_text);
 		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 20000});
 		hashObj.update(domain);
 		hashObj.update(master_password);
-		hashObj.update(sp.sillySalt);
+		hashObj.update(tp.sillySalt);
 		var result = hashObj.getHash("B64");
 		result = result.slice(0, 20);
 		// Now give it as good a chance as possible of being accepted by fussy websites
@@ -52,9 +52,9 @@ var sp = {
 
 	timeGeneratePassword: function(domain_text, master_password){
 		var start = new Date().getTime();
-		result = sp.generatePassword(domain_text, master_password);
+		result = tp.generatePassword(domain_text, master_password);
 		var time = ((new Date()).getTime() - start) / 1000;
-		sp.log("generatePassword took " + String(time) + " seconds");
+		tp.log("generatePassword took " + String(time) + " seconds");
 		ga('send', 'event', "web", "event", "hash_time_seconds", time);
 		return result;
 	},
@@ -63,7 +63,7 @@ var sp = {
 		// Used for keeping a local store of the previously-used domains, this function returns
 		// a hash of the normalised domain so that we're not storing the domains in plain text.
 		// (Easy to rainbow table for commonly-used sites, but might as well do it anyway)
-		var domain = sp.normaliseDomain(domain_text);
+		var domain = tp.normaliseDomain(domain_text);
 		var hashObj = new jsSHA("SHA-512", "TEXT");
 		hashObj.update(domain);
 		return hashObj.getHash("B64");

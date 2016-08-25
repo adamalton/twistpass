@@ -29,7 +29,7 @@ if("TODO" == "How do we detect if extension is in dev mode?"){
 }else{
 	var ga = function(a, b, c, d, e, f, g){
 		var arr = [a, b, c, d, e, f, g];
-		sp.log("[debug] Analytics call: [" + arr.join(", ") + "]");
+		tp.log("[debug] Analytics call: [" + arr.join(", ") + "]");
 	}
 }
 

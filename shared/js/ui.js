@@ -98,7 +98,7 @@ var ui = {
 				// ui.domainHasBeenUsedBefore accordingly
 				var previous_hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
 				// For a bit of extra privacy we store hashes of the previously used domains
-				ui.currentDomainHash = sp.hashDomain(ui.steps.domain.input.val());
+				ui.currentDomainHash = tp.hashDomain(ui.steps.domain.input.val());
 				ui.domainHasBeenUsedBefore = previous_hashes.indexOf(ui.currentDomainHash) != -1;
 			}
 		},
@@ -235,9 +235,9 @@ var ui = {
 			updateStrengthOMeter: function(){
 				var strength = ui.steps.master1.getPasswordStrength();
 				var colour = ui.steps.master1.getStrengthColour(strength);
-				sp.log("password: " + $(this).val());
-				sp.log("password legnth: " + String($(this).val().length));
-				sp.log(strength);
+				tp.log("password: " + $(this).val());
+				tp.log("password legnth: " + String($(this).val().length));
+				tp.log(strength);
 				$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
 					.addClass(strength);
 				$(".strength-desc").addClass("hide");
@@ -318,10 +318,10 @@ var ui = {
 				// Detect if the confirmation password is correct *so far*, and if not show an error msg
 				var this_val = ui.steps.master2.input.val();
 				if(this_val !== ui.steps.master1.input.val().slice(0, this_val.length)){
-					sp.log("invalid");
+					tp.log("invalid");
 					ui.steps.master2.input.addClass("invalid");
 				}else{
-					sp.log("valid");
+					tp.log("valid");
 					ui.steps.master2.input.removeClass("invalid");
 				}
 			},
@@ -350,7 +350,7 @@ var ui = {
 			generatePassword: function(){
 				// Separated only to allow us to delay it so that the UI can update *before* we
 				// set off the hashing algorithm
-				ui.generatedPassword = sp.timeGeneratePassword(
+				ui.generatedPassword = tp.timeGeneratePassword(
 					ui.steps.domain.input.val(), // Normalisation is done for us
 					ui.steps.master1.input.val()
 				);
@@ -362,10 +362,10 @@ var ui = {
 				// Store the domain of the password that we've generated so that we don't ask the
 				// user to confirm the master password for it next time
 				var hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
-				sp.log("hashes...");
-				sp.log(hashes);
-				sp.log(typeof hashes);
-				hashes.push(sp.hashDomain(ui.steps.domain.input.val()));
+				tp.log("hashes...");
+				tp.log(hashes);
+				tp.log(typeof hashes);
+				hashes.push(tp.hashDomain(ui.steps.domain.input.val()));
 				localStorage.setItem("previously-used-domain-hashes", JSON.stringify(hashes));
 			}
 		},
@@ -408,7 +408,7 @@ var ui = {
 
 		updateNormalisedDomainName: function(){
 			// Update the various bits of the page which say "Your password for {domain-name}".
-			$(".normalised-domain-name").text(sp.normaliseDomain(ui.steps.domain.input.val()));
+			$(".normalised-domain-name").text(tp.normaliseDomain(ui.steps.domain.input.val()));
 		},
 
 		togglePasswordDisplay: function(){
