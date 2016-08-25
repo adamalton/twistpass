@@ -1,24 +1,8 @@
-var chromeExt = {
-	init: function(){
-		chrome.tabs.query(
-			{currentWindow: true, active: true},
-			chromeExt.getTabsCallback
-		);
-	},
+// General JS for TwistPass web version.
+// Expects global variable 'ui' to exist (from ui.js).
 
-	getTabsCallback: function(tabs){
-		// We expect to be given an array with 1 tab
-		if(tabs && tabs.length === 1 && tabs[0].url){
-			ui.steps.domain.input.val(tabs[0].url);
-			ui.steps.domain.validate();
-		}
-
-	}
-};
-
-
-// Google Analytics
-if("TODO" == "How do we detect if extension is in dev mode?"){
+/* Google Analytics */
+if(!/localhost/.test(document.location.href)){
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -34,5 +18,13 @@ ga('create', 'UA-71748771-1', 'auto');
 ga('send', 'pageview');
 
 
-chromeExt.init();
-ui.init();
+
+if($("#generator-page").length){
+	ui.init();
+}
+
+/* All Pages */
+
+(function(){
+	$(".button-collapse").sideNav();
+})();
