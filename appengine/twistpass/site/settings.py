@@ -141,7 +141,9 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = (".appspot.com", "twistpass.com", "www.twistpass.com")
+ALLOWED_HOSTS = (
+    ".appspot.com", "twistpass.com", "www.twistpass.com", "swappass.com", "www.swappass.com"
+)
 
 DOMAIN_REDIRECTS = {
     "www.twistpass.com": "twistpass.com",
