@@ -31,9 +31,15 @@ handlers:
   static_dir: staticcollected/
   secure: always
 
-# robots.txt
+# # robots.txt
 - url: /(.+\.(txt))$
-  static_files: \1
+  static_files: root/\1
+  upload: /root/.*$
+
+# Any URL at /name-that-does-not-contain-a-slash.xyz we can attempt to serve as a static file
+# from the /root/ folder.
+- url: /([^/]+.(js|css|swf|html|xml|txt|mp3|gif|png|jpg|svg))$
+  static_files: root/\1
   upload: /root/.*$
 
 
