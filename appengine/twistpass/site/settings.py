@@ -145,4 +145,6 @@ ALLOWED_HOSTS = (".appspot.com", "twistpass.com", "www.twistpass.com")
 
 DOMAIN_REDIRECTS = {
     "www.twistpass.com": "twistpass.com",
+    "www.swappass.com": "twistpass.com",
+    "swappass.com": "twistpass.com",
 }
