@@ -10,25 +10,28 @@ var tp = {
 	// that any compatible knock-off is (by the fact that it is compatible) in breach of copyright.
 	sillySalt: "SxeMIZqM8fMlKZh4K6UzsZu45o3x6rK3yp3DXu2fu53ZHn6",
 
-	normaliseDomain: function(domain_text){
-		// Given the text from the `domain` input, return the perceived domain name
+	normaliseName: function(name_text){
+		// Given the text from the `name` input, return a normalised version.
+		// Essentially this means removing whitespace and lowercasing it.
 		// Note that this will need to be the same in all implementations
-		domain_text = domain_text.toLowerCase().trim();
-		if(/^https?:\/\//.test(domain_text) || /^[a-z0-9-][a-z0-9\.-]*\.[a-z]{2,}\/?/.test(domain_text)){
-			// If it looks like a domain name
-			domain_text = domain_text.replace(/^https?:\/\//, "").replace(/\/.*/, ""); // get only the domain bit
-			if(/^www\./.test(domain_text) && domain_text.match(/\./).length >= 2){
-				// If it starts with www. and www. is not the main part of the domain (e.g. it's not www.com)
-				domain_text = domain_text.replace(/^www\./, ""); // Strip out the leading www.
-			}
-
-		}
-		return domain_text;
+		name_text = name_text.toLowerCase();
+		name_text = name_text.replace(/\s/g, ""); // Remove all whitespace
+		name_text = name_text.replace(/[_-]/g, ""); // Remove underscores and hyphens
+		return name_text;
 	},
 
-	generatePassword: function(domain_text, master_password){
+	getNameFromDomain: function(domain_name){
+		// TODO: given a domain name, e.g. bbc.co.uk, extract the name, e.g. 'bbc'.
+		throw "Not implemented";
+		// If it starts with protocol:// and protocol is not http or https, bail.
+		// Remove http:// or https://
+		// Remove TLD, and next level down if it's .co.uk, .co.nz, .uk.com, .org.us, etc
+		// Lowercase
+	},
+
+	generatePassword: function(name_text, master_password){
 		// Here's where all the magic happens
-		var domain = tp.normaliseDomain(domain_text);
+		var domain = tp.normaliseName(name_text);
 		var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 20000});
 		hashObj.update(domain);
 		hashObj.update(master_password);
@@ -50,22 +53,22 @@ var tp = {
 		return result;
 	},
 
-	timeGeneratePassword: function(domain_text, master_password){
+	timeGeneratePassword: function(name_text, master_password){
 		var start = new Date().getTime();
-		result = tp.generatePassword(domain_text, master_password);
+		result = tp.generatePassword(name_text, master_password);
 		var time = ((new Date()).getTime() - start) / 1000;
 		tp.log("generatePassword took " + String(time) + " seconds");
 		ga('send', 'event', "web", "event", "hash_time_seconds", time);
 		return result;
 	},
 
-	hashDomain: function(domain_text){
+	hashName: function(name_text){
 		// Used for keeping a local store of the previously-used domains, this function returns
 		// a hash of the normalised domain so that we're not storing the domains in plain text.
 		// (Easy to rainbow table for commonly-used sites, but might as well do it anyway)
-		var domain = tp.normaliseDomain(domain_text);
+		var name = tp.normaliseName(name_text);
 		var hashObj = new jsSHA("SHA-512", "TEXT");
-		hashObj.update(domain);
+		hashObj.update(name);
 		return hashObj.getHash("B64");
 	},
 

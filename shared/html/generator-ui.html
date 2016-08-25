@@ -1,17 +1,16 @@
 <div class="section no-pad-bot" id="generator-page">
 	<div class="container">
 		<form>
-			<div class="step domain" data-step-name="domain">
+			<div class="step name" data-step-name="name">
 				<div class="row center">
-					<h5 class="header col s12">What Website Do You Want to Generate a Password for?</h5>
+					<h5 class="header col s12">What Do You Want to Generate a Password for?</h5>
 					<div class="input-field col l8 s12">
-						<input id="domain-name" type="text" placeholder="e.g. google.com" />
-						<label for="domain-name" data-error="This is required">Paste URL from login page (or type full domain name)</label>
+						<input id="name" type="text" placeholder="e.g. google" />
+						<label for="name" data-error="This is required">Name of website or app</label>
 					</div>
 					<div class="input-field col l4 s12">
 						<p class="light">
-							If you're generating a password for a service which is not a website,
-							then enter a name for it which you can reliably enter the same next time.
+							You will need to be able to type the same name again next time.
 						</p>
 					</div>
 				</div>
@@ -54,8 +53,7 @@
 							</label>
 						</div>
 						<p>
-							This should be a password that you have never typed (and never will
-							type) into anywhere other than here.
+							You should never type this password anywhere other than into TwistPass.
 						</p>
 						<p>
 							It is <strong>vital</strong> that this is so obscure that no one (human or
@@ -98,7 +96,7 @@
 						</div>
 						<p>
 							It looks like you're generating your password for
-							<span class="normalised-domain-name light italic">this website</span> for the first time, so it's
+							<span class="normalised-name light italic">this website</span> for the first time, so it's
 							important that your master password is typed correctly.
 						</p>
 					</div>
@@ -125,7 +123,7 @@
 
 			<div class="step hide result" data-step-name="result">
 				<div class="row center">
-					<h5>Your password for <span class="normalised-domain-name light italic">this website</span> is:</h5>
+					<h5>Your password for <span class="normalised-name light italic">this website</span> is:</h5>
 					<div class="input-field col s12">
 						<input type="password" id="generated-password" value="" />
 					</div>

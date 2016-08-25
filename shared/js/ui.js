@@ -4,18 +4,18 @@
 var ui = {
 
 	generatedPassword: null,
-	currentDomainHash: null,
-	domainHasBeenUsedBefore: false,
+	currentNameHash: null,
+	nameHasBeenUsedBefore: false,
 
 	init: function(){
 		ui.steps.common.init();
-		ui.steps.domain.init();
+		ui.steps.name.init();
 		ui.steps.master1.init();
 		ui.steps.master2.init();
 		ui.steps.generate.init();
 		ui.steps.result.init();
 
-		ui.steps.domain.load(); // This step is what's initially displayed
+		ui.steps.name.load(); // This step is what's initially displayed
 	},
 
 	steps: {
@@ -40,37 +40,37 @@ var ui = {
 			}
 		},
 
-		domain: {
+		name: {
 			init: function(){
 				// Called when the entire UI is first loaded (i.e. on page load)
-				var input = $("#domain-name");
-				ui.steps.domain.input = input;
+				var input = $("#name");
+				ui.steps.name.input = input;
 				input.on("keypress", ui.steps.common.submitOnReturn);
-				input.on("keyup", ui.steps.domain.validate);
-				input.on("keyup", ui.dom.updateNormalisedDomainName);
-				var button = $(".step.domain button").eq(0);
-				ui.steps.domain.button = button;
-				button.on("click", ui.steps.domain.submit);
+				input.on("keyup", ui.steps.name.validate);
+				input.on("keyup", ui.dom.updateNormalisedName);
+				var button = $(".step.name button").eq(0);
+				ui.steps.name.button = button;
+				button.on("click", ui.steps.name.submit);
 			},
 
 			load: function(){
 				// Called when this step is (re-)displayed
-				ui.analytics.logStep("domain");
-				ui.steps.domain.input.focus();
-				// If the user refreshes the page then the 'domain' input may be pre-populated,
+				ui.analytics.logStep("name");
+				ui.steps.name.input.focus();
+				// If the user refreshes the page then the 'name' input may be pre-populated,
 				// so validate what's in there to start with.
-				ui.steps.domain.validate();
+				ui.steps.name.validate();
 			},
 
 			validate: function(){
 				// Peform validation and update the UI of this step accordingly.
 				// Returns the result of isValid() for convenience.
-				var is_valid = ui.steps.domain.isValid();
+				var is_valid = ui.steps.name.isValid();
 				if(is_valid){
-					ui.steps.domain.button.removeClass("disabled");
-					ui.steps.domain.input.removeClass("invalid");
+					ui.steps.name.button.removeClass("disabled");
+					ui.steps.name.input.removeClass("invalid");
 				}else{
-					ui.steps.domain.button.addClass("disabled");
+					ui.steps.name.button.addClass("disabled");
 					// Note that we don't show an error message on the input unless the user
 					// tries to submit the step
 				}
@@ -79,27 +79,27 @@ var ui = {
 
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
-				if(ui.steps.domain.validate()){
-					ui.steps.domain.checkIfDomainHasBeenUsedBefore();
+				if(ui.steps.name.validate()){
+					ui.steps.name.checkIfNameHasBeenUsedBefore();
 					ui.dom.showStep("master1");
 				}else{
 					// Display of the error message is only done here when the user tries
 					// to subit the step, not every time we validate, which is on each keystroke
-					ui.steps.domain.input.addClass("invalid");
+					ui.steps.name.input.addClass("invalid");
 				}
 			},
 
 			isValid: function(){
-				return Boolean(ui.steps.domain.input.val().length);
+				return Boolean(ui.steps.name.input.val().length);
 			},
 
-			checkIfDomainHasBeenUsedBefore: function(){
-				// See if the user has previously generated a password for this domain, and update
-				// ui.domainHasBeenUsedBefore accordingly
-				var previous_hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
-				// For a bit of extra privacy we store hashes of the previously used domains
-				ui.currentDomainHash = tp.hashDomain(ui.steps.domain.input.val());
-				ui.domainHasBeenUsedBefore = previous_hashes.indexOf(ui.currentDomainHash) != -1;
+			checkIfNameHasBeenUsedBefore: function(){
+				// See if the user has previously generated a password for this name, and update
+				// ui.nameHasBeenUsedBefore accordingly
+				var previous_hashes = JSON.parse(localStorage.getItem("previously-used-name-hashes") || "[]");
+				// For a bit of extra privacy we store hashes of the previously used names
+				ui.currentNameHash = tp.hashName(ui.steps.name.input.val());
+				ui.nameHasBeenUsedBefore = previous_hashes.indexOf(ui.currentNameHash) != -1;
 			}
 		},
 
@@ -125,7 +125,7 @@ var ui = {
 				// we need to show the master password confirmation step
 				ui.steps.master1.button.find("span").addClass("hide");
 
-				if(ui.domainHasBeenUsedBefore){
+				if(ui.nameHasBeenUsedBefore){
 					ui.steps.master1.button.find("span.generate-text").removeClass("hide");
 				}else{
 					ui.steps.master1.button.find("span.next-text").removeClass("hide");
@@ -152,9 +152,9 @@ var ui = {
 				// Called when the user (tries to) submit(s) this step
 				if(ui.steps.master1.validate()){
 					// Depending on whether or not the user has generated a password for this
-					// domain or not before we either want to show the master password confirmation
+					// name or not before we either want to show the master password confirmation
 					// step, or just generate the password
-					if(ui.domainHasBeenUsedBefore){
+					if(ui.nameHasBeenUsedBefore){
 						ui.dom.showStep("generate");
 					}else{
 						ui.dom.showStep("master2");
@@ -235,7 +235,6 @@ var ui = {
 			updateStrengthOMeter: function(){
 				var strength = ui.steps.master1.getPasswordStrength();
 				var colour = ui.steps.master1.getStrengthColour(strength);
-				tp.log("password: " + $(this).val());
 				tp.log("password legnth: " + String($(this).val().length));
 				tp.log(strength);
 				$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
@@ -351,22 +350,22 @@ var ui = {
 				// Separated only to allow us to delay it so that the UI can update *before* we
 				// set off the hashing algorithm
 				ui.generatedPassword = tp.timeGeneratePassword(
-					ui.steps.domain.input.val(), // Normalisation is done for us
+					ui.steps.name.input.val(), // Normalisation is done for us
 					ui.steps.master1.input.val()
 				);
-				ui.steps.generate.addDomainToPreviouslyUsedList();
+				ui.steps.generate.addNameToPreviouslyUsedList();
 				ui.dom.showStep("result");
 			},
 
-			addDomainToPreviouslyUsedList: function(){
-				// Store the domain of the password that we've generated so that we don't ask the
+			addNameToPreviouslyUsedList: function(){
+				// Store the name of the password that we've generated so that we don't ask the
 				// user to confirm the master password for it next time
-				var hashes = JSON.parse(localStorage.getItem("previously-used-domain-hashes") || "[]");
+				var hashes = JSON.parse(localStorage.getItem("previously-used-name-hashes") || "[]");
 				tp.log("hashes...");
 				tp.log(hashes);
 				tp.log(typeof hashes);
-				hashes.push(tp.hashDomain(ui.steps.domain.input.val()));
-				localStorage.setItem("previously-used-domain-hashes", JSON.stringify(hashes));
+				hashes.push(tp.hashName(ui.steps.name.input.val()));
+				localStorage.setItem("previously-used-name-hashes", JSON.stringify(hashes));
 			}
 		},
 
@@ -406,9 +405,9 @@ var ui = {
 			ui.dom.showStep(previous_step_name);
 		},
 
-		updateNormalisedDomainName: function(){
-			// Update the various bits of the page which say "Your password for {domain-name}".
-			$(".normalised-domain-name").text(tp.normaliseDomain(ui.steps.domain.input.val()));
+		updateNormalisedName: function(){
+			// Update the various bits of the page which say "Your password for {name}".
+			$(".normalised-name").text(tp.normaliseName(ui.steps.name.input.val()));
 		},
 
 		togglePasswordDisplay: function(){
