@@ -15,6 +15,7 @@ var chromeExt = {
 			var name = tp.getNameFromUrl(tabs[0].url);
 			ui.steps.name.input.val(name);
 			ui.steps.name.validate();
+			ui.dom.updateNormalisedName();
 		}
 
 	}
@@ -38,5 +39,6 @@ ga('create', 'UA-71748771-1', 'auto');
 ga('send', 'pageview');
 
 
-chromeExt.init();
 ui.init();
+chromeExt.init();
+
