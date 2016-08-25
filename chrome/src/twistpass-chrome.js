@@ -1,3 +1,6 @@
+// First, make our import <link> part of the actual page.
+document.getElementById("generator-ui-placeholder").outerHTML = document.getElementById("generator-ui-import").import.getElementsByTagName("div")[0].outerHTML;
+
 var chromeExt = {
 	init: function(){
 		chrome.tabs.query(
