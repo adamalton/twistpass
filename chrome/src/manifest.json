@@ -7,13 +7,13 @@
 	"version": "1.0",
 
 	"icons": {
-		"16": "img/twistpass-logo-orange.svg",
-		"48": "img/twistpass-logo-orange.svg",
-		"128": "img/twistpass-logo-orange.svg"
+		"16": "img/twistpass-logo-2-16.png",
+		"48": "img/twistpass-logo-2-48.png",
+		"128": "img/twistpass-logo-2-128.png"
 	},
 
 	"browser_action": {
-		"default_icon": "img/twistpass-logo-orange.svg",
+		"default_icon": "img/twistpass-logo-2-128.png",
 		"default_popup": "popup.html"
 	},
 
