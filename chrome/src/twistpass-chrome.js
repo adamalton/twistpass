@@ -12,8 +12,9 @@ var chromeExt = {
 	getTabsCallback: function(tabs){
 		// We expect to be given an array with 1 tab
 		if(tabs && tabs.length === 1 && tabs[0].url){
-			ui.steps.domain.input.val(tabs[0].url);
-			ui.steps.domain.validate();
+			var name = tp.getNameFromUrl(tabs[0].url);
+			ui.steps.name.input.val(name);
+			ui.steps.name.validate();
 		}
 
 	}

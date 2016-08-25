@@ -20,13 +20,45 @@ var tp = {
 		return name_text;
 	},
 
-	getNameFromDomain: function(domain_name){
-		// TODO: given a domain name, e.g. bbc.co.uk, extract the name, e.g. 'bbc'.
-		throw "Not implemented";
-		// If it starts with protocol:// and protocol is not http or https, bail.
-		// Remove http:// or https://
-		// Remove TLD, and next level down if it's .co.uk, .co.nz, .uk.com, .org.us, etc
-		// Lowercase
+	getNameFromUrl: function(url){
+		// TODO: given a URL, e.g. http://bbc.co.uk?a=b, extract the name, e.g. 'bbc'.
+		// This is by its very nature an inexact, error-prone and ever-changing game.
+		// First, remove trailing slashes, query strings, hash fragments and friends
+		var domain_name = url.toLowerCase().replace(/\/$|\?.+|#.+/g, "");
+
+		if(/^[a-z]+:\/\//.test(domain_name)){
+			if(!/^https?:\/\//.test(domain_name)){
+				//It starts with protocol:// and protocol is not http or https, bail.
+				return "";
+			}else{
+				// Remove the protocol
+				domain_name = domain_name.replace(/https?:\/\//, "");
+			}
+		}
+		// Now remove any path
+		domain_name = domain_name.replace(/\/.*/, "");
+
+		if(!domain_name.match(/[^\.]\.[a-z]+$/)){
+			// Doesn't look like a domain name at all
+			return "";
+		}
+		var tld = domain_name.match(/\.([a-z]+$)/)[1];
+		var sld = domain_name.match(/([^\.]+)\.[a-z]+$/)[1]; //Second level domain
+		console.log("TLD:" + tld);
+		console.log("SLD:" + sld);
+		if(
+			// The TLD is a country, and that country does not allow registration of SLDs
+			(COUNTRY_TLDS.indexOf(tld) != -1 && COUNTRIES_WHICH_ALLOW_SLDS.indexOf(tld) != -1) ||
+			// OR the SLD domain is a common non-registered part, e.g. co.xx, ac.xx, org.xx
+			COMMON_SLDS.indexOf(sld) != -1
+		){
+			// We assume that the registered domain is the 3rd level domain
+			var thld = domain_name.match(/([^\.]+)\.[a-z]+\.[a-z]+$/)[1];
+			// Try to use the third level domain, or if there isn't one, fall back to the SLD
+			return thld ? thld : sld;
+		}
+		// In all other cases (for now!) we just use the sld
+		return sld;
 	},
 
 	generatePassword: function(name_text, master_password){
@@ -78,3 +110,38 @@ var tp = {
 		}
 	}
 };
+
+var COUNTRY_TLDS = [
+	"ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "ao", "aq", "ar", "as", "at", "au", "aw",
+	"ax", "az", "ba", "bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bn", "bo", "bq", "br",
+	"bs", "bt", "bv", "bw", "by", "bz", "ca", "cc", "cd", "cf", "cg", "ch", "ci", "ck", "cl", "cm",
+	"cn", "co", "cr", "cu", "cv", "cw", "cx", "cy", "cz", "de", "dj", "dk", "dm", "do", "dz", "ec",
+	"ee", "eg", "eh", "er", "es", "et", "eu", "fi", "fj", "fk", "fm", "fo", "fr", "ga", "gb", "gd",
+	"ge", "gf", "gg", "gh", "gi", "gl", "gm", "gn", "gp", "gq", "gr", "gs", "gt", "gu", "gw", "gy",
+	"hk", "hm", "hn", "hr", "ht", "hu", "id", "ie", "il", "im", "in", "io", "iq", "ir", "is", "it",
+	"je", "jm", "jo", "jp", "ke", "kg", "kh", "ki", "km", "kn", "kp", "kr", "kw", "ky", "kz", "la",
+	"lb", "lc", "li", "lk", "lr", "ls", "lt", "lu", "lv", "ly", "ma", "mc", "md", "me", "mg", "mh",
+	"mk", "ml", "mm", "mn", "mo", "mp", "mq", "mr", "ms", "mt", "mu", "mv", "mw", "mx", "my", "mz",
+	"na", "nc", "ne", "nf", "ng", "ni", "nl", "no", "np", "nr", "nu", "nz", "om", "pa", "pe", "pf",
+	"pg", "ph", "pk", "pl", "pm", "pn", "pr", "ps", "pt", "pw", "py", "qa", "re", "ro", "rs", "ru",
+	"rw", "sa", "sb", "sc", "sd", "se", "sg", "sh", "si", "sj", "sk", "sl", "sm", "sn", "so", "sr",
+	"ss", "st", "su", "sv", "sx", "sy", "sz", "tc", "td", "tf", "tg", "th", "tj", "tk", "tl", "tm",
+	"tn", "to", "tp", "tr", "tt", "tv", "tw", "tz", "ua", "ug", "uk", "us", "uy", "uz", "va", "vc",
+	"ve", "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "za", "zm", "zw"
+];
+var COUNTRIES_WHICH_ALLOW_SLDS = [
+	"ac", "ad", "ae", "af", "ag", "ai", "al", "am", "an", "aq", "as", "at", "aw", "ax", "az", "ba",
+	"bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bo", "bs", "bw", "by", "bz", "ca", "cc",
+	"cd", "cf", "cg", "ch", "ci", "ck", "cl", "cm", "cn", "co", "cr", "cu", "cv", "cx", "cz", "de",
+	"dj", "dk", "dm", "do", "dz", "ec", "ee", "eg", "es", "eu", "fi", "fj", "fm", "fo", "fr", "ga",
+	"gd", "ge", "gg", "gi", "gl", "gm", "gp", "gr", "gs", "gt", "gw", "gy", "hk", "hm", "hn", "hr",
+	"ht", "hu", "id", "ie", "im", "in", "io", "iq", "ir", "is", "it", "je", "jo", "jp", "kg", "ki",
+	"km", "kn", "kr", "ky", "kz", "la", "lc", "li", "lk", "lt", "lu", "lv", "ly", "ma", "mc", "md",
+	"me", "mg", "mk", "ml", "mn", "mo", "mp", "mr", "ms", "mu", "mv", "mw", "mx", "my", "na", "nc",
+	"ne", "nf", "ng", "nl", "no", "nr", "nu", "nz", "pe", "pf", "ph", "pk", "pl", "pn", "pr", "ps",
+	"pt", "pw", "re", "ro", "rs", "ru", "rw", "sa", "sc", "sd", "se", "sg", "sh", "si", "sk", "sl",
+	"sm", "sn", "so", "sr", "st", "su", "sy", "tc", "td", "tf", "tg", "tj", "tk", "tl", "tm", "tn",
+	"to", "tp", "tr", "tt", "tv", "tw", "ua", "ug", "uk", "us", "uy", "uz", "vc", "vg", "vi", "vn",
+	"vu", "wf", "ws", "yt", "zm"
+];
+var COMMON_SLDS = ["co", "ac", "org"];
