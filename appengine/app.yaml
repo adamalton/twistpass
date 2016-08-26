@@ -35,7 +35,7 @@ handlers:
 # from the /root/ folder.
 - url: /([^/]+.(js|css|swf|html|xml|txt|mp3|gif|png|jpg|svg))$
   static_files: root/\1
-  upload: /root/.*$
+  upload: root/.*$
   secure: always
 
 # Allow Let's Encrypt ACME URL to be access on plain HTTP, otherwise renewing certificates after
