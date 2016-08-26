@@ -42,6 +42,7 @@ var ui = {
 			reset: function(){
 				// Reset the UI back to the beginning
 				ui.steps.name.input.val("");
+				ui.steps.master1.updateStrengthOMeter();
 				ui.dom.showStep("name");
 			}
 		},
@@ -241,7 +242,7 @@ var ui = {
 			updateStrengthOMeter: function(){
 				var strength = ui.steps.master1.getPasswordStrength();
 				var colour = ui.steps.master1.getStrengthColour(strength);
-				tp.log("password legnth: " + String($(this).val().length));
+				tp.log("password legnth: " + String(ui.steps.master1.input.val().length));
 				tp.log(strength);
 				$("#strength").removeClass("nothing pathetic very-weak weak borderline ok good")
 					.addClass(strength);
