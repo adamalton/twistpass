@@ -4,7 +4,7 @@
 	"name": "TwistPass",
 	"short_name": "TwistPass",
 	"description": "We don't remember your passwords, and neither should you.",
-	"version": "0.1",
+	"version": "0.2",
 
 	"icons": {
 		"16": "img/twistpass-logo-2-16.png",
