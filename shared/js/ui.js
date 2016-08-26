@@ -27,7 +27,7 @@ var ui = {
 			// ==========================================================
 
 			init: function(){
-				$("button.prev-step").on("click", ui.dom.showPrevioiusStep);
+				$("button.prev-step").on("click", ui.dom.showPreviousStep);
 				$(".show-password").on("change", ui.dom.togglePasswordDisplay);
 			},
 
@@ -400,7 +400,7 @@ var ui = {
 			ui.steps[step].load();
 		},
 
-		showPrevioiusStep: function(){
+		showPreviousStep: function(){
 			var previous_step_name = $(".step:not(.hide)").prev().data("step-name");
 			ui.dom.showStep(previous_step_name);
 		},
