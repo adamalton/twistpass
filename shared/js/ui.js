@@ -37,6 +37,12 @@ var ui = {
 					var step_name = $(this).closest(".step").data("step-name");
 					ui.steps[step_name].submit();
 				}
+			},
+
+			reset: function(){
+				// Reset the UI back to the beginning
+				ui.steps.name.input.val("");
+				ui.dom.showStep("name");
 			}
 		},
 
@@ -374,6 +380,7 @@ var ui = {
 				// Called when the entire UI is first loaded (i.e. on page load)
 				var input = $("#generated-password");
 				ui.steps.result.input = input;
+				$("#reset").on("click", ui.steps.common.reset);
 				$("#copy").on("click", ui.dom.copyPasswordToClipboard);
 			},
 
