@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% block main %}
+
+<div class="section no-pad-bot" id="index-banner">
+	<div class="container">
+		<h1 class="header center orange-text">Send Love or Money</h1>
+		<div class="section">
+			<h5 class="header light">
+				If you use this site and you like it, you can send grattitude in various forms.
+			</h5>
+		</div>
+		<div class="section">
+			<h5 class="header light-blue-text">
+				Flattr
+			</h5>
+			<p class="light">
+				You can make micro donations to TwistPass using our Flattr button
+			</p>
+			<p class="light">
+				<a href="https://flattr.com/submit/auto?fid=661r2o&amp;url=https%3A%2F%2Ftwistpass.com%2F" target="_blank"><img src="{{STATIC_URL}}flattr/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a>
+			</p>
+		</div>
+		<div class="section">
+			<h5 class="header light-blue-text">
+				Share It
+			</h5>
+			<p class="light">
+				You can help TwistPass become more popular by sharing it on
+				<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftwistpass.com%2F&amp;display=popup" target="_blank">Facebook</a>,
+				<a href="https://twitter.com/intent/tweet?text={{'Check out TwistPass and never manage your passwords again!'|urlencode }}&amp;url={{'https://twistpass.com'|urlencode}}" target="_blank">Twitter</a>,
+				or any of those other internet sharing sites.
+			</p>
+			<p class="light">
+				<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftwistpass.com%2F&amp;display=popup" target="_blank"><img src="{{STATIC_URL}}facebook/facebook-share-button.png" /></a>&nbsp;
+				<a href="https://twitter.com/intent/tweet?text={{'Check out TwistPass and never manage your passwords again!'|urlencode }}&amp;url={{'https://twistpass.com'|urlencode}}" target="_blank"><img src="{{STATIC_URL}}twitter/tweet-button-2015.png" /></a>
+			</p>
+		</div>
+	</div>
+</div>
+
+
+{% endblock main %}

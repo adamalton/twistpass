@@ -49,6 +49,13 @@ def feedback(request):
 
 @cache_control(public=True)
 @cache_page(CACHE_TIME)
+def send_love(request):
+    """ Page on whcih users can donate. """
+    return render(request, "core/send_love.html", {})
+
+
+@cache_control(public=True)
+@cache_page(CACHE_TIME)
 def tips(request):
     """ Tips for how to create a strong master password. """
     return render(request, "core/tips.html", {})
