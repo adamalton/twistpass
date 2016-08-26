@@ -382,6 +382,10 @@ var ui = {
 				ui.analytics.logStep("result");
 				ui.steps.result.input.val(ui.generatedPassword).select();
 				ui.dom.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
+				// Wipe out the value(s) from the master password input(s) so that it stays in
+				// memory for as little time as possible
+				ui.steps.master1.input.val('');
+				ui.steps.master2.input.val('');
 			},
 
 			submit: function(){
