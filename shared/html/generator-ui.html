@@ -94,10 +94,19 @@
 								<input type="checkbox" class="show-password" /><span class="lever"></span> Show password
 							</label>
 						</div>
-						<p>
+						<p class="master2-reason new-name">
 							It looks like you're generating your password for
 							<span class="normalised-name light italic">this website</span> for the first time, so it's
 							important that your master password is typed correctly.
+						</p>
+						<p class="master2-reason master-changed hide">
+							<!-- Telling the user "It looks like you've typed a different master password to last time"
+							is only going to raise questions like "I thought TwistPass didn't store any of my passwords?" which then leads to having to explain hashing, etc.
+							So instead we just ask them to confirm their master password with no explanation,
+							as confirming a password is something that they're probably used to anyway.
+							We improve their experience, they just don't know we're doing it.
+							-->
+							Bloody different!
 						</p>
 					</div>
 				</div><!-- end row -->

@@ -1,11 +1,16 @@
 // JS for the HTML-based user interface.
 // Expects a global variable called 'ga' to exist for making Google Analytics calls to.
+// If you want to take advantage of the functionality that asks for the master password to be typed
+// again if it differs from what the user used last time, then you need to set
+// ui.lastUsedMasterPasswordHash before the user interacts with the master password step.  This
+// functionality also requires the jsSHA library.
 
 var ui = {
 
 	generatedPassword: null,
 	currentNameHash: null,
 	nameHasBeenUsedBefore: false,
+	lastUsedMasterPasswordHash: "",
 
 	init: function(){
 		ui.steps.common.init();
@@ -161,10 +166,17 @@ var ui = {
 					// Depending on whether or not the user has generated a password for this
 					// name or not before we either want to show the master password confirmation
 					// step, or just generate the password
-					if(ui.nameHasBeenUsedBefore){
-						ui.dom.showStep("generate");
-					}else{
+					if(!ui.nameHasBeenUsedBefore){
+						// TODO: In this scenario we're not updating the last used password hash.
+						// Need to fix that.  What's the best place to generate and store it?
+						// Maybe in the master2 step?
+						ui.steps.master2.showReason("new-name");
 						ui.dom.showStep("master2");
+					}else if(ui.steps.master1.masterPasswordHasChanged()){
+						ui.steps.master2.showReason("master-changed");
+						ui.dom.showStep("master2");
+					}else{
+						ui.dom.showStep("generate");
 					}
 				}else{
 					// Display of the error message is only done here when the user tries
@@ -253,6 +265,31 @@ var ui = {
 
 			updateMaster2RequiredLength: function(){
 				ui.steps.master2.updateRequiredLengthDisplay(ui.steps.master1.input.val().length);
+			},
+
+			masterPasswordHasChanged(){
+				// IS the current value of the master password (1) field (probably) different to
+				// what the user typed last time?
+				// We determine this by comparing a 1 CHARACTER hash of the current and previous
+				// passwords.  Storing a full hash would be a security vulnerability because if
+				// it was leaked (which is quite possible on shared computers) then it could be
+				// used to find the master password.  So instead we store a single character of
+				// a hash, which will catch a change in the password in the majority of cases, but
+				// will be of very little us to anyone trying to work out what the master password
+				// is.
+				var hashObj, current_hash, ret_val;
+				var previous_hash = localStorage.getItem("last-used-master-password-hash");
+
+				hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1000});
+				hashObj.update(ui.steps.master1.input.val());
+				current_hash = hashObj.getHash("B64").substr(0, 1);
+				localStorage.setItem("last-used-master-password-hash", current_hash);
+
+				if(!previous_hash){
+					// We have no previous hash to compare to, so assume nothing has changed.
+					return false;
+				}
+				return current_hash == previous_hash ? false : true;
 			}
 		},
 
@@ -331,6 +368,11 @@ var ui = {
 					ui.steps.master2.input.removeClass("invalid");
 				}
 			},
+
+			showReason: function(reason){
+				// Display text to the user to explain why we're asking for their master password again.
+				$(".master2-reason").hide().find("." + reason).show();
+			}
 		},
 
 		generate: {
