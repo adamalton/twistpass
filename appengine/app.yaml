@@ -38,9 +38,9 @@ handlers:
   upload: root/.*$
   secure: always
 
-# Allow Let's Encrypt ACME URL to be access on plain HTTP, otherwise renewing certificates after
+# Allow Let's Encrypt ACME URL to be accessed on plain HTTP, otherwise renewing certificates after
 # they've expired is a pain
-- url: /\.well-known/acme-challenge/
+- url: /\.well-known/acme-challenge/.*
   script: twistpass.site.wsgi.application
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction

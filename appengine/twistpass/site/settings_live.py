@@ -14,6 +14,7 @@ SECURE_REDIRECT_EXEMPT = [
     # djangosecure compares these to request.path.lstrip("/"), hence the lack of preceding /
     r"^_ah/",
     r"^keep-alive/",
+    r"^\.well-known/acme-challenge/",
 ]
 
 SECURE_CHECKS += ["twistpass.site.checks.check_csp_sources_not_unsafe"]
