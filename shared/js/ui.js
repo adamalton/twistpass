@@ -1,16 +1,24 @@
 // JS for the HTML-based user interface.
 // Expects a global variable called 'ga' to exist for making Google Analytics calls to.
-// If you want to take advantage of the functionality that asks for the master password to be typed
-// again if it differs from what the user used last time, then you need to set
-// ui.lastUsedMasterPasswordHash before the user interacts with the master password step.  This
-// functionality also requires the jsSHA library.
+// ui.init() must be called from somewhere.
+
+// If you want to take advantage of the functionality that makes the master password confirmation
+// step only appear if the master password differs from what the user used last time, then you need
+// to set ui.showConfirmStepDeterminer to "password-changed" and then set (if you know the value)
+// set ui.lastUsedMasterPasswordHash before the user interacts with the master password step.
+// You should also listen for the jQuery custom event which is fired when this value changes, in
+// order that you can store the updated value when it changes.
+// Because of the fact that it stores a 1 CHARACTER hash of the password, this option should not be
+// used on shared computers.  Hence it's currently only used in the Chrome extenstion.
 
 var ui = {
 
 	generatedPassword: null,
 	currentNameHash: null,
 	nameHasBeenUsedBefore: false,
+	showConfirmStepDeterminer: "name-not-previously-used", // Can be set to "password-changed"
 	lastUsedMasterPasswordHash: "",
+	lastUsedMasterPasswordHashUpdatedEventName: "last-used-master-password-hash-changed",
 
 	init: function(){
 		ui.steps.common.init();
@@ -163,17 +171,13 @@ var ui = {
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
 				if(ui.steps.master1.validate()){
-					// Depending on whether or not the user has generated a password for this
-					// name or not before we either want to show the master password confirmation
-					// step, or just generate the password
-					if(!ui.nameHasBeenUsedBefore){
-						// TODO: In this scenario we're not updating the last used password hash.
-						// Need to fix that.  What's the best place to generate and store it?
-						// Maybe in the master2 step?
-						ui.steps.master2.showReason("new-name");
-						ui.dom.showStep("master2");
-					}else if(ui.steps.master1.masterPasswordHasChanged()){
+					// We may or may not want the user to confirm their master password.  We have 2
+					// different ways of deciding whether or not to do this
+					if(ui.showConfirmStepDeterminer === "password-changed" && ui.steps.master1.masterPasswordHasChanged()){
 						ui.steps.master2.showReason("master-changed");
+						ui.dom.showStep("master2");
+					}else if(ui.showConfirmStepDeterminer === "name-not-previously-used" && !ui.nameHasBeenUsedBefore){
+						ui.steps.master2.showReason("new-name");
 						ui.dom.showStep("master2");
 					}else{
 						ui.dom.showStep("generate");
@@ -267,7 +271,7 @@ var ui = {
 				ui.steps.master2.updateRequiredLengthDisplay(ui.steps.master1.input.val().length);
 			},
 
-			masterPasswordHasChanged(){
+			masterPasswordHasChanged: function(){
 				// IS the current value of the master password (1) field (probably) different to
 				// what the user typed last time?
 				// We determine this by comparing a 1 CHARACTER hash of the current and previous
@@ -277,19 +281,21 @@ var ui = {
 				// a hash, which will catch a change in the password in the majority of cases, but
 				// will be of very little us to anyone trying to work out what the master password
 				// is.
-				var hashObj, current_hash, ret_val;
-				var previous_hash = localStorage.getItem("last-used-master-password-hash");
-
-				hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1000});
-				hashObj.update(ui.steps.master1.input.val());
-				current_hash = hashObj.getHash("B64").substr(0, 1);
-				localStorage.setItem("last-used-master-password-hash", current_hash);
-
-				if(!previous_hash){
+				if(!ui.lastUsedMasterPasswordHash){
 					// We have no previous hash to compare to, so assume nothing has changed.
 					return false;
 				}
-				return current_hash == previous_hash ? false : true;
+				return ui.steps.master1.getMasterPasswordHash() !== ui.lastUsedMasterPasswordHash;
+			},
+
+			getMasterPasswordHash: function(){
+				// Return a SINGLE CHARACTER hash of the master password.
+				// This is used for detecting when the user has (probably) typed a different master
+				// password to last time, but as its only one character, leaking it doesn't have a
+				// huge effect on security (it reduces the brute force effort by 64x).
+				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1000});
+				hashObj.update(ui.steps.master1.input.val());
+				return hashObj.getHash("B64").substr(0, 1);
 			}
 		},
 
@@ -403,6 +409,7 @@ var ui = {
 					ui.steps.master1.input.val()
 				);
 				ui.steps.generate.addNameToPreviouslyUsedList();
+				ui.steps.generate.storeLastUsedMasterPasswordHash();
 				ui.dom.showStep("result");
 			},
 
@@ -415,7 +422,21 @@ var ui = {
 				tp.log(typeof hashes);
 				hashes.push(tp.hashName(ui.steps.name.input.val()));
 				localStorage.setItem("previously-used-name-hashes", JSON.stringify(hashes));
-			}
+			},
+
+			storeLastUsedMasterPasswordHash: function(){
+				// Store the (possibly updated_ last used master password hash.
+				var new_hash = ui.steps.master1.getMasterPasswordHash();
+				if(new_hash !== ui.lastUsedMasterPasswordHash){
+					ui.lastUsedMasterPasswordHash = new_hash;
+					// We only store it in local JS variable here, and we fire an event to allow
+					// other things (such as the Chrome extension) to listen for it.
+					$(document).trigger(
+						ui.lastUsedMasterPasswordHashUpdatedEventName,
+						[ui.lastUsedMasterPasswordHash]
+					);
+				}
+			},
 		},
 
 		result: {
