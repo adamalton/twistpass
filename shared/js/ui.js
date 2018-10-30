@@ -19,6 +19,8 @@ var ui = {
 	showConfirmStepDeterminer: "name-not-previously-used", // Can be set to "password-changed"
 	lastUsedMasterPasswordHash: "",
 	lastUsedMasterPasswordHashUpdatedEventName: "last-used-master-password-hash-changed",
+	selfDestructTimeout: null, // JS timeout ID for destroying the master & generated password
+	selfDestructTime: 120000, // Amount of time (ms) until self destruct happens after inactivity
 
 	init: function(){
 		ui.steps.common.init();
@@ -53,11 +55,24 @@ var ui = {
 			},
 
 			reset: function(){
-				// Reset the UI back to the beginning
+				// Reset the UI back to the beginning and trash all sensitive data in the page
 				ui.steps.name.input.val("");
+				ui.steps.master1.input.val("");
+				ui.steps.master2.input.val("");
 				ui.steps.master1.updateStrengthOMeter();
+				ui.steps.result.input.val("");
 				ui.dom.showStep("name");
-			}
+			},
+
+			setSelfDestruct: function(){
+				// Set the timers for 6 minutes James!  Ok Alec.
+				// Note that this is the same function to RE-set the timeout, as well as set it
+				if(ui.selfDestructTimeout !== null){
+					clearTimeout(ui.selfDestructTimeout);
+				}
+				ui.selfDestructTimeout = setTimeout(ui.steps.common.reset, ui.selfDestructTime);
+			},
+
 		},
 
 		name: {
@@ -171,6 +186,8 @@ var ui = {
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
 				if(ui.steps.master1.validate()){
+					// We now have sensitive data in the page, so self destruct if we're left unattended
+					ui.steps.common.setSelfDestruct();
 					// We may or may not want the user to confirm their master password.  We have 2
 					// different ways of deciding whether or not to do this
 					if(ui.showConfirmStepDeterminer === "password-changed" && ui.steps.master1.masterPasswordHasChanged()){
@@ -336,6 +353,12 @@ var ui = {
 
 			submit: function(){
 				// Called when the user (tries to) submit(s) this step
+
+				// Regardless of whether or not this step validates, we still have sensitive data
+				// (because they passed step 1), but the fact they passed step 1 means that the
+				// self-destruction timer has already been set. But we want to reset the countdown.
+				ui.steps.common.setSelfDestruct();
+
 				if(ui.steps.master2.validate()){
 					ui.dom.showStep("generate");
 				}else{
@@ -425,7 +448,7 @@ var ui = {
 			},
 
 			storeLastUsedMasterPasswordHash: function(){
-				// Store the (possibly updated_ last used master password hash.
+				// Store the (possibly updated) last used master password hash.
 				var new_hash = ui.steps.master1.getMasterPasswordHash();
 				if(new_hash !== ui.lastUsedMasterPasswordHash){
 					ui.lastUsedMasterPasswordHash = new_hash;
@@ -451,12 +474,18 @@ var ui = {
 			load: function(){
 				// Called when this step is (re-)displayed
 				ui.analytics.logStep("result");
+
+				// We now have (even more) sensitive data in the page, so make sure the self-destruct
+				// timer is set, and (more likely) reset it so that the user has time to copy their
+				// generated password before we blow everything up
+				ui.steps.common.setSelfDestruct();
+
 				ui.steps.result.input.val(ui.generatedPassword).select();
 				ui.dom.copyPasswordToClipboard(); // might be blocked by browser if hashing took too long
 				// Wipe out the value(s) from the master password input(s) so that it stays in
 				// memory for as little time as possible
-				ui.steps.master1.input.val('');
-				ui.steps.master2.input.val('');
+				ui.steps.master1.input.val("");
+				ui.steps.master2.input.val("");
 			},
 
 			submit: function(){
