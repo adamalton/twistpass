@@ -13,9 +13,9 @@ fix_path()
 import os
 from django.core.wsgi import get_wsgi_application
 from djangae.wsgi import DjangaeApplication
-from djangae.utils import on_production
+from djangae.environment import is_production_environment
 
-settings = "twistpass.site.settings_live" if on_production() else "twistpass.site.settings"
+settings = "twistpass.site.settings_live" if is_production_environment() else "twistpass.site.settings"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings)
 
 
