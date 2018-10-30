@@ -1,1 +1,1 @@
-This folder will contain the code for the Google Chrome extension.
+This folder contains the code for the Google Chrome extension.
