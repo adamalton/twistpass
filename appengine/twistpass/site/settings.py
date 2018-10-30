@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'csp',
     'cspreports',
-    'djangae.contrib.gauth.datastore',
+    'djangae.contrib.gauth_datastore',
     'djangae.contrib.security',
     'djangae.contrib.contenttypes',
     # 'djangae.contrib.uniquetool',
