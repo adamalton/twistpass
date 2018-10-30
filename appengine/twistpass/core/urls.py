@@ -1,15 +1,16 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
-urlpatterns = patterns(
-    'twistpass.core.views',
-    url(r'^$', 'home', name='home'),
-    url(r'^generator/$', 'generator', name='generator'),
-    url(r'^how-it-works/$', 'how_it_works', name='how_it_works'),
+from twistpass.core import views
 
-    url(r'^feedback/$', 'feedback', name='feedback'),
-    url(r'^send-love/$', 'send_love', name='send_love'),
-    url(r'^tips/$', 'tips', name='tips'),
+urlpatterns = [
+    url(r'^$', views.home, name='home'),
+    url(r'^generator/$', views.generator, name='generator'),
+    url(r'^how-it-works/$', views.how_it_works, name='how_it_works'),
+
+    url(r'^feedback/$', views.feedback, name='feedback'),
+    url(r'^send-love/$', views.send_love, name='send_love'),
+    url(r'^tips/$', views.tips, name='tips'),
     # url(r'^learn/$', 'learn', name='learn'),
 
-    url(r'^keep-alive/$', 'keep_alive', name='keep_alive'),
-)
+    url(r'^keep-alive/$', views.keep_alive, name='keep_alive'),
+]

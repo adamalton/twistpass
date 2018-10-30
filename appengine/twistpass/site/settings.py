@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djangosecure',
     'csp',
     'cspreports',
     'djangae.contrib.gauth.datastore',
@@ -48,7 +47,6 @@ INSTALLED_APPS = (
     # 'djangae.contrib.uniquetool',
     'twistpass.core',
     'twistpass.site',
-    'letsencryptae',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,8 +57,9 @@ MIDDLEWARE_CLASSES = (
     # 'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     'csp.middleware.CSPMiddleware',
-    # 'session_csrf.CsrfMiddleware',
-    'djangosecure.middleware.SecurityMiddleware',
+    'session_csrf.CsrfMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'twistpass.site.middleware.DomainRedirectMiddlware',
 )
 
@@ -141,12 +140,33 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = (
-    ".appspot.com", "twistpass.com", "www.twistpass.com", "swappass.com", "www.swappass.com"
-)
 
 DOMAIN_REDIRECTS = {
     "www.twistpass.com": "twistpass.com",
     "www.swappass.com": "twistpass.com",
     "swappass.com": "twistpass.com",
 }
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "session_csrf.context_processor"
+            ],
+            'debug': True,
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+        },
+    },
+]

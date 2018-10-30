@@ -1,7 +1,7 @@
 import sys
 from os.path import dirname, abspath, join, exists
 
-PROJECT_DIR = dirname(dirname(abspath(__file__)))
+PROJECT_DIR = dirname(dirname(dirname(abspath(__file__))))
 SITEPACKAGES_DIR = join(PROJECT_DIR, "sitepackages")
 DEV_SITEPACKAGES_DIR = join(SITEPACKAGES_DIR, "dev")
 PROD_SITEPACKAGES_DIR = join(SITEPACKAGES_DIR, "prod")
