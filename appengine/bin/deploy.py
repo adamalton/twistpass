@@ -29,4 +29,7 @@ command = [
     "" if promote else "--no-promote",
     "app.yaml"
 ]
+
+command = [x for x in command if x]  # Remove empty value if not --no-promote
+
 process = subprocess.run(command)
