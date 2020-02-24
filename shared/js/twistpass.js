@@ -104,9 +104,9 @@ var tp = {
 		return hashObj.getHash("B64");
 	},
 
-	log: function(msg){
+	log: function(...args){
 		if(typeof console !== "undefined"){
-			console.log(msg);
+			console.log(...args);
 		}
 	}
 };
