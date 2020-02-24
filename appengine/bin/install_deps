@@ -14,7 +14,7 @@ REQUIREMENTS = ["pip", "git"]
 
 FILES_IGNORED_FOR_DELETION = ["google_appengine"]
 
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+PROJECT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 REQUIREMENTS_DIR = os.path.join(PROJECT_DIR, "requirements")
 REQUIREMENTS_FILE = os.path.join(REQUIREMENTS_DIR, "prod.txt")
 DEV_REQUIREMENTS_FILE = os.path.join(REQUIREMENTS_DIR, "dev.txt")
